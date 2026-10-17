@@ -1,751 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="color-scheme" content="light" />
-  <title>雙人全方位價值觀測驗｜75 題｜手機相容版</title>
-  <style>
-    :root {
-      --bg: #f7f7fb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --accent: #4f46e5;
-      --accent-soft: #eef2ff;
-      --danger: #b91c1c;
-      --success: #047857;
-      --shadow: 0 8px 28px rgba(17, 24, 39, 0.06);
-      --radius: 18px;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      line-height: 1.65;
-    }
-    .wrap { width: min(920px, calc(100% - 28px)); margin: 0 auto; }
-    header { padding: 34px 0 18px; }
-    .hero {
-      background: linear-gradient(135deg, #ffffff 0%, #f4f1ff 100%);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 28px;
-    }
-    h1 { margin: 0 0 10px; font-size: clamp(28px, 6vw, 42px); line-height: 1.18; letter-spacing: -0.02em; }
-    .subtitle { margin: 0; color: var(--muted); font-size: 16px; }
-    .notice {
-      margin-top: 18px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      color: #9a3412;
-      font-size: 14px;
-    }
-    .meta-card {
-      margin-top: 18px;
-      display: grid;
-      gap: 14px;
-      grid-template-columns: 1fr;
-    }
-    label.field-label { display: block; font-weight: 700; margin-bottom: 7px; }
-    input[type="text"] {
-      width: 100%;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 13px 14px;
-      font: inherit;
-      background: #fff;
-      color: var(--text);
-      outline: none;
-    }
-    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
-    .scale-help {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      text-align: center;
-    }
-    .scale-help span { background: rgba(255,255,255,.8); border: 1px solid var(--line); border-radius: 10px; padding: 7px 4px; }
-    .sticky-progress {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(10px);
-      background: rgba(247, 247, 251, 0.9);
-      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-      padding: 10px 0;
-    }
-    .progress-row { display: flex; align-items: center; gap: 12px; }
-    .bar { flex: 1; height: 10px; border-radius: 999px; overflow: hidden; background: #e5e7eb; }
-    .bar > div { width: 0%; height: 100%; background: linear-gradient(90deg, #4f46e5, #7c3aed); transition: width .2s ease; }
-    .progress-text { white-space: nowrap; font-size: 13px; font-weight: 700; color: #4b5563; }
-    main { padding: 18px 0 34px; }
-    .dimension {
-      margin: 18px 0;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .dimension-head {
-      padding: 18px 20px;
-      background: #fafafa;
-      border-bottom: 1px solid var(--line);
-    }
-    .dimension-kicker { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    .dimension h2 { margin: 4px 0 0; font-size: 21px; }
-    .question { padding: 20px; border-bottom: 1px solid var(--line); scroll-margin-top: 76px; }
-    .question:last-child { border-bottom: 0; }
-    .q-title { margin: 0 0 12px; font-size: 16px; font-weight: 700; }
-    .q-num { color: var(--accent); margin-right: 6px; }
-    .choices { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
-    .choice { position: relative; min-width: 0; }
-    .choice input {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-    .choice label {
-      display: flex;
-      min-height: 54px;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      cursor: pointer;
-      background: #fff;
-      color: #1f2937;
-      font-weight: 800;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: .15s ease;
-    }
-    .choice .choice-text { display: none; font-weight: 650; }
-    .choice input:checked + label::before { content: "✓"; font-size: 14px; }
-    .choice label:hover { border-color: #a5b4fc; background: #fafaff; }
-    .choice input:focus-visible + label { outline: 3px solid #c7d2fe; outline-offset: 2px; }
-    .choice input:checked + label { color: #fff; background: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
-    .question.invalid { background: #fff7f7; }
-    .question.invalid .q-title { color: var(--danger); }
-    .actions {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px;
-      margin-top: 20px;
-    }
-    .action-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    button {
-      border: 0;
-      border-radius: 12px;
-      padding: 13px 17px;
-      font: inherit;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .primary { background: var(--accent); color: #fff; }
-    .secondary { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
-    .status { margin-top: 12px; min-height: 24px; color: var(--muted); font-size: 14px; }
-    .status.error { color: var(--danger); font-weight: 700; }
-    .status.ok { color: var(--success); font-weight: 700; }
-    .footnote { margin: 18px 0 42px; color: var(--muted); font-size: 13px; }
-    @media (max-width: 640px) {
-      .wrap { width: min(100% - 20px, 920px); }
-      header { padding-top: 18px; }
-      .hero { padding: 20px; border-radius: 18px; }
-      .scale-help { grid-template-columns: 1fr; text-align: left; }
-      .scale-help span { padding: 6px 10px; }
-      .question { padding: 17px 14px; }
-      .dimension-head { padding: 15px 14px; }
-      .choices { grid-template-columns: 1fr; gap: 8px; }
-      .choice label {
-        min-height: 48px;
-        border-radius: 10px;
-        justify-content: flex-start;
-        padding: 10px 14px;
-        font-size: 15px;
-      }
-      .choice .choice-score {
-        display: inline-flex;
-        width: 28px;
-        height: 28px;
-        border-radius: 999px;
-        align-items: center;
-        justify-content: center;
-        background: #f3f4f6;
-        flex: 0 0 auto;
-      }
-      .choice .choice-text { display: inline; }
-      .choice input:checked + label .choice-score { background: rgba(255,255,255,.18); }
-      .progress-text { font-size: 12px; }
-      .actions { padding: 16px; }
-      .action-row button { flex: 1 1 100%; }
-    }
-    @media print {
-      .sticky-progress, .actions { display: none; }
-      body { background: #fff; }
-      .dimension, .hero { box-shadow: none; break-inside: avoid; }
-    }
-  
-    .export-panel { margin-top: 18px; padding: 16px; border: 1px solid #d7dce3; border-radius: 14px; background: #f8fafc; display:none; }
-    .export-panel.show { display:block; }
-    .export-panel h3 { margin:0 0 8px; font-size:1rem; }
-    .export-help { margin:0 0 10px; color:#52606d; font-size:.92rem; line-height:1.55; }
-    #jsonOutput { width:100%; min-height:180px; box-sizing:border-box; border:1px solid #cbd5e1; border-radius:10px; padding:10px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; background:#fff; color:#111827; }
-    .export-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-    .export-actions button { flex:1 1 150px; }
-    .runtime-note { margin: 10px 0 0; font-size:.88rem; color:#64748b; }
-
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>職涯性向與工作價值觀測驗 v2.1.0</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#182033;--muted:#667085;--line:#e5e9f2;--accent:#3157d5;--accent2:#e9eeff;--danger:#b42318;--shadow:0 12px 32px rgba(29,41,57,.08);}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+button,input{font:inherit} .shell{max-width:920px;margin:0 auto;padding:24px 16px 56px} .topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px} .brand{font-weight:800;letter-spacing:.01em} .version{font-size:.85rem;color:var(--muted);background:#fff;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:28px} h1{font-size:clamp(1.7rem,5vw,2.35rem);line-height:1.25;margin:0 0 12px} h2{font-size:1.25rem;margin:0} p{margin:8px 0 0} .muted{color:var(--muted)} .intro-list{margin:18px 0;padding-left:20px;color:#344054} .field{margin-top:24px} label.input-label{display:block;font-weight:700;margin-bottom:8px} input[type=text]{width:100%;border:1px solid #cfd6e4;border-radius:12px;padding:13px 14px;background:#fff;outline:none} input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(49,87,213,.12)} .error{color:var(--danger);font-weight:700;margin-top:10px} .hidden{display:none!important}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;min-height:46px} .btn-primary{background:var(--accent);color:#fff} .btn-secondary{background:#fff;color:#25324b;border:1px solid #cfd6e4} .btn-danger{background:#fff;color:var(--danger);border:1px solid #f1b5ae} .btn:focus-visible{outline:3px solid rgba(49,87,213,.25);outline-offset:2px} .start-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.progress-wrap{position:sticky;top:0;z-index:10;background:rgba(244,246,251,.94);backdrop-filter:blur(10px);padding:10px 0 14px;margin:-4px 0 10px} .progress-meta{display:flex;justify-content:space-between;gap:12px;font-size:.92rem;color:var(--muted);margin-bottom:8px} .progress-track{height:10px;background:#e2e7f0;border-radius:999px;overflow:hidden} .progress-bar{height:100%;background:var(--accent);width:0;transition:width .2s ease}
+.scale-key{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.8rem;margin:10px 2px 16px} .questions{display:grid;gap:14px} fieldset.q{margin:0;border:1px solid var(--line);background:#fff;border-radius:16px;padding:18px} fieldset.q.missing{border-color:#e66b60;box-shadow:0 0 0 2px rgba(180,35,24,.08)} legend{padding:0 6px;font-weight:750;line-height:1.5} .qid{color:var(--muted);font-size:.82rem;margin-right:6px} .likert{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px} .choice{position:relative} .choice input{position:absolute;opacity:0;pointer-events:none} .choice label{display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #d6dce8;border-radius:11px;background:#fafbfe;cursor:pointer;font-weight:800;color:#475467;transition:.12s} .choice input:checked+label{background:var(--accent2);border-color:var(--accent);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)} .choice input:focus-visible+label{outline:3px solid rgba(49,87,213,.2)}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px} .nav .right{display:flex;gap:10px;margin-left:auto} .finish-card{text-align:center;padding:42px 28px} .finish-icon{font-size:2.6rem} .finish-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:24px} .notice{margin:0 0 14px;padding:11px 13px;border-radius:12px;background:#fff4f2;color:var(--danger);font-weight:700;border:1px solid #ffd2cc}
+.storage-note{font-size:.83rem;color:#7a5b00;background:#fffae8;border:1px solid #f4df9b;border-radius:10px;padding:9px 11px;margin-top:12px}
+@media(max-width:640px){.shell{padding:14px 10px 36px} .card{padding:20px 16px;border-radius:16px} fieldset.q{padding:15px 12px} .likert{gap:5px} .choice label{min-height:46px} .scale-key{font-size:.72rem} .nav{align-items:stretch} .nav .right{flex:1} .nav .right .btn{flex:1} .btn{padding:11px 13px}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <section class="hero">
-        <div class="dimension-kicker">Two-Person Values Test</div>
-        <h1>雙人全方位價值觀測驗</h1>
-        <p class="subtitle">15 大面向 × 每面向 5 題，共 75 題。請依「你真正認同的程度」作答，而不是你覺得理想上應該怎麼回答。</p>
-        <div class="notice">本測驗為自訂價值觀比較工具，不是心理診斷或科學驗證的感情契合度量表，也不能用來預測關係成敗。之後的百分比僅代表兩人在本份問卷上的回答接近程度。</div>
-        <div class="meta-card">
-          <div>
-            <label class="field-label" for="respondentName">填寫者名稱</label>
-            <input id="respondentName" type="text" maxlength="60" placeholder="例如：Alex" autocomplete="name" />
-          </div>
-          <div>
-            <div class="field-label">作答尺度</div>
-            <div class="scale-help" aria-label="1 到 5 分量表說明">
-              <span><strong>1</strong>＝非常不同意</span>
-              <span><strong>2</strong>＝不同意</span>
-              <span><strong>3</strong>＝中立／看情況</span>
-              <span><strong>4</strong>＝同意</span>
-              <span><strong>5</strong>＝非常同意</span>
-            </div>
-          </div>
-        </div>
-      </section>
+<div class="shell">
+  <div class="topbar"><div class="brand">職涯性向與工作價值觀測驗</div><div class="version">v2.1.0</div></div>
+
+  <section id="startScreen" class="card">
+    <h1>了解你的工作偏好與職涯特質</h1>
+    <p class="muted">共 96 題。所有題目皆使用相同的 1～5 同意程度量表，沒有標準答案，請依你通常最自然的傾向作答。</p>
+    <ul class="intro-list"><li>1＝非常不同意，5＝非常同意</li><li>所有題目必填</li><li>重新整理後會盡量保留進度</li><li>完成後只會匯出原始作答 JSON，不會在本頁分析或推薦職業</li></ul>
+    <div class="field"><label class="input-label" for="nameInput">姓名／暱稱</label><input id="nameInput" type="text" maxlength="80" autocomplete="name" placeholder="請輸入姓名或暱稱"></div>
+    <div id="nameError" class="error hidden">請先輸入姓名／暱稱。</div>
+    <div id="storageNote" class="storage-note hidden">此瀏覽器目前無法使用 localStorage；仍可正常作答與下載 JSON，但重新整理後可能無法保留進度。</div>
+    <div class="start-actions"><button id="startBtn" class="btn btn-primary" type="button">開始測驗</button></div>
+  </section>
+
+  <section id="quizScreen" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-meta"><span id="progressText">已完成 0 / 96</span><span id="pageText">第 1 / 14 頁</span></div>
+      <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
     </div>
-  </header>
-
-  <noscript><div class="wrap"><div class="notice">目前瀏覽器未啟用 JavaScript。75 題仍可正常顯示與作答，但進度與 JSON 下載功能需要使用 Safari、Chrome 或 Edge 開啟此檔案。</div></div></noscript>
-
-  <div class="sticky-progress">
-    <div class="wrap progress-row">
-      <div class="bar" aria-hidden="true"><div id="progressFill"></div></div>
-      <div id="progressText" class="progress-text">已完成 0 / 75</div>
+    <div id="quizNotice" class="notice hidden"></div>
+    <div class="scale-key"><span>1 非常不同意</span><span>3 普通／不確定</span><span>5 非常同意</span></div>
+    <div id="questions" class="questions"></div>
+    <div class="nav">
+      <button id="prevBtn" class="btn btn-secondary" type="button">上一頁</button>
+      <div class="right"><button id="nextBtn" class="btn btn-primary" type="button">下一頁</button></div>
     </div>
-  </div>
+  </section>
 
-  <main class="wrap">
-    <form id="quizForm" novalidate>
-      <div id="questionsRoot">
-<section class="dimension" data-dimension-id="life_outlook">
-<div class="dimension-head"><div class="dimension-kicker">面向 1 / 15</div><h2>人生觀</h2></div>
-<div class="question" id="block-q01" data-qid="q01" data-dimension-id="life_outlook" data-dimension-name="人生觀"><p class="q-title"><span class="q-num">1.</span>人生的意義主要應由每個人自己定義，而不是由傳統或社會替我決定。</p><div class="choices" role="radiogroup" aria-label="第 1 題"><div class="choice"><input type="radio" id="q01-1" name="q01" value="1" aria-label="1 分：非常不同意" /><label for="q01-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q01-2" name="q01" value="2" aria-label="2 分：不同意" /><label for="q01-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q01-3" name="q01" value="3" aria-label="3 分：中立／看情況" /><label for="q01-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q01-4" name="q01" value="4" aria-label="4 分：同意" /><label for="q01-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q01-5" name="q01" value="5" aria-label="5 分：非常同意" /><label for="q01-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q02" data-qid="q02" data-dimension-id="life_outlook" data-dimension-name="人生觀"><p class="q-title"><span class="q-num">2.</span>即使沒有明確的外在成就，只要活得符合自己的信念，也可以算是成功的人生。</p><div class="choices" role="radiogroup" aria-label="第 2 題"><div class="choice"><input type="radio" id="q02-1" name="q02" value="1" aria-label="1 分：非常不同意" /><label for="q02-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q02-2" name="q02" value="2" aria-label="2 分：不同意" /><label for="q02-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q02-3" name="q02" value="3" aria-label="3 分：中立／看情況" /><label for="q02-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q02-4" name="q02" value="4" aria-label="4 分：同意" /><label for="q02-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q02-5" name="q02" value="5" aria-label="5 分：非常同意" /><label for="q02-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q03" data-qid="q03" data-dimension-id="life_outlook" data-dimension-name="人生觀"><p class="q-title"><span class="q-num">3.</span>人在做重大選擇時，長期意義通常比眼前便利更重要。</p><div class="choices" role="radiogroup" aria-label="第 3 題"><div class="choice"><input type="radio" id="q03-1" name="q03" value="1" aria-label="1 分：非常不同意" /><label for="q03-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q03-2" name="q03" value="2" aria-label="2 分：不同意" /><label for="q03-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q03-3" name="q03" value="3" aria-label="3 分：中立／看情況" /><label for="q03-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q03-4" name="q03" value="4" aria-label="4 分：同意" /><label for="q03-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q03-5" name="q03" value="5" aria-label="5 分：非常同意" /><label for="q03-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q04" data-qid="q04" data-dimension-id="life_outlook" data-dimension-name="人生觀"><p class="q-title"><span class="q-num">4.</span>我相信人生中的挫折通常值得被轉化成學習或重新選擇的契機。</p><div class="choices" role="radiogroup" aria-label="第 4 題"><div class="choice"><input type="radio" id="q04-1" name="q04" value="1" aria-label="1 分：非常不同意" /><label for="q04-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q04-2" name="q04" value="2" aria-label="2 分：不同意" /><label for="q04-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q04-3" name="q04" value="3" aria-label="3 分：中立／看情況" /><label for="q04-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q04-4" name="q04" value="4" aria-label="4 分：同意" /><label for="q04-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q04-5" name="q04" value="5" aria-label="5 分：非常同意" /><label for="q04-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q05" data-qid="q05" data-dimension-id="life_outlook" data-dimension-name="人生觀"><p class="q-title"><span class="q-num">5.</span>當個人理想與社會期待衝突時，我傾向優先忠於自己真正重視的方向。</p><div class="choices" role="radiogroup" aria-label="第 5 題"><div class="choice"><input type="radio" id="q05-1" name="q05" value="1" aria-label="1 分：非常不同意" /><label for="q05-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q05-2" name="q05" value="2" aria-label="2 分：不同意" /><label for="q05-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q05-3" name="q05" value="3" aria-label="3 分：中立／看情況" /><label for="q05-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q05-4" name="q05" value="4" aria-label="4 分：同意" /><label for="q05-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q05-5" name="q05" value="5" aria-label="5 分：非常同意" /><label for="q05-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="money">
-<div class="dimension-head"><div class="dimension-kicker">面向 2 / 15</div><h2>金錢觀</h2></div>
-<div class="question" id="block-q06" data-qid="q06" data-dimension-id="money" data-dimension-name="金錢觀"><p class="q-title"><span class="q-num">6.</span>金錢對我而言，最重要的功能是提供安全感與選擇權。</p><div class="choices" role="radiogroup" aria-label="第 6 題"><div class="choice"><input type="radio" id="q06-1" name="q06" value="1" aria-label="1 分：非常不同意" /><label for="q06-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q06-2" name="q06" value="2" aria-label="2 分：不同意" /><label for="q06-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q06-3" name="q06" value="3" aria-label="3 分：中立／看情況" /><label for="q06-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q06-4" name="q06" value="4" aria-label="4 分：同意" /><label for="q06-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q06-5" name="q06" value="5" aria-label="5 分：非常同意" /><label for="q06-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q07" data-qid="q07" data-dimension-id="money" data-dimension-name="金錢觀"><p class="q-title"><span class="q-num">7.</span>即使收入增加，我仍認為維持適度儲蓄比提升消費水準更重要。</p><div class="choices" role="radiogroup" aria-label="第 7 題"><div class="choice"><input type="radio" id="q07-1" name="q07" value="1" aria-label="1 分：非常不同意" /><label for="q07-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q07-2" name="q07" value="2" aria-label="2 分：不同意" /><label for="q07-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q07-3" name="q07" value="3" aria-label="3 分：中立／看情況" /><label for="q07-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q07-4" name="q07" value="4" aria-label="4 分：同意" /><label for="q07-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q07-5" name="q07" value="5" aria-label="5 分：非常同意" /><label for="q07-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q08" data-qid="q08" data-dimension-id="money" data-dimension-name="金錢觀"><p class="q-title"><span class="q-num">8.</span>只要負擔得起，我願意花較多錢換取時間、便利或品質。</p><div class="choices" role="radiogroup" aria-label="第 8 題"><div class="choice"><input type="radio" id="q08-1" name="q08" value="1" aria-label="1 分：非常不同意" /><label for="q08-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q08-2" name="q08" value="2" aria-label="2 分：不同意" /><label for="q08-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q08-3" name="q08" value="3" aria-label="3 分：中立／看情況" /><label for="q08-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q08-4" name="q08" value="4" aria-label="4 分：同意" /><label for="q08-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q08-5" name="q08" value="5" aria-label="5 分：非常同意" /><label for="q08-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q09" data-qid="q09" data-dimension-id="money" data-dimension-name="金錢觀"><p class="q-title"><span class="q-num">9.</span>對親近的人談清楚借錢、分攤與還款方式，是維持關係的必要做法。</p><div class="choices" role="radiogroup" aria-label="第 9 題"><div class="choice"><input type="radio" id="q09-1" name="q09" value="1" aria-label="1 分：非常不同意" /><label for="q09-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q09-2" name="q09" value="2" aria-label="2 分：不同意" /><label for="q09-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q09-3" name="q09" value="3" aria-label="3 分：中立／看情況" /><label for="q09-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q09-4" name="q09" value="4" aria-label="4 分：同意" /><label for="q09-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q09-5" name="q09" value="5" aria-label="5 分：非常同意" /><label for="q09-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q10" data-qid="q10" data-dimension-id="money" data-dimension-name="金錢觀"><p class="q-title"><span class="q-num">10.</span>我可以接受為了更高的長期報酬承擔一定程度的財務波動與不確定性。</p><div class="choices" role="radiogroup" aria-label="第 10 題"><div class="choice"><input type="radio" id="q10-1" name="q10" value="1" aria-label="1 分：非常不同意" /><label for="q10-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q10-2" name="q10" value="2" aria-label="2 分：不同意" /><label for="q10-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q10-3" name="q10" value="3" aria-label="3 分：中立／看情況" /><label for="q10-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q10-4" name="q10" value="4" aria-label="4 分：同意" /><label for="q10-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q10-5" name="q10" value="5" aria-label="5 分：非常同意" /><label for="q10-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="morality">
-<div class="dimension-head"><div class="dimension-kicker">面向 3 / 15</div><h2>道德與是非觀</h2></div>
-<div class="question" id="block-q11" data-qid="q11" data-dimension-id="morality" data-dimension-name="道德與是非觀"><p class="q-title"><span class="q-num">11.</span>即使不會被發現，我也認為不應為了方便而違反自己認定的重要原則。</p><div class="choices" role="radiogroup" aria-label="第 11 題"><div class="choice"><input type="radio" id="q11-1" name="q11" value="1" aria-label="1 分：非常不同意" /><label for="q11-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q11-2" name="q11" value="2" aria-label="2 分：不同意" /><label for="q11-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q11-3" name="q11" value="3" aria-label="3 分：中立／看情況" /><label for="q11-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q11-4" name="q11" value="4" aria-label="4 分：同意" /><label for="q11-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q11-5" name="q11" value="5" aria-label="5 分：非常同意" /><label for="q11-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q12" data-qid="q12" data-dimension-id="morality" data-dimension-name="道德與是非觀"><p class="q-title"><span class="q-num">12.</span>判斷一件事是否正當時，我會同時考慮規則、動機與造成的後果。</p><div class="choices" role="radiogroup" aria-label="第 12 題"><div class="choice"><input type="radio" id="q12-1" name="q12" value="1" aria-label="1 分：非常不同意" /><label for="q12-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q12-2" name="q12" value="2" aria-label="2 分：不同意" /><label for="q12-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q12-3" name="q12" value="3" aria-label="3 分：中立／看情況" /><label for="q12-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q12-4" name="q12" value="4" aria-label="4 分：同意" /><label for="q12-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q12-5" name="q12" value="5" aria-label="5 分：非常同意" /><label for="q12-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q13" data-qid="q13" data-dimension-id="morality" data-dimension-name="道德與是非觀"><p class="q-title"><span class="q-num">13.</span>在某些極端情況下，說謊可能比完全誠實更符合道德。</p><div class="choices" role="radiogroup" aria-label="第 13 題"><div class="choice"><input type="radio" id="q13-1" name="q13" value="1" aria-label="1 分：非常不同意" /><label for="q13-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q13-2" name="q13" value="2" aria-label="2 分：不同意" /><label for="q13-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q13-3" name="q13" value="3" aria-label="3 分：中立／看情況" /><label for="q13-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q13-4" name="q13" value="4" aria-label="4 分：同意" /><label for="q13-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q13-5" name="q13" value="5" aria-label="5 分：非常同意" /><label for="q13-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q14" data-qid="q14" data-dimension-id="morality" data-dimension-name="道德與是非觀"><p class="q-title"><span class="q-num">14.</span>當多數人的做法與我的道德判斷衝突時，我願意維持自己的立場。</p><div class="choices" role="radiogroup" aria-label="第 14 題"><div class="choice"><input type="radio" id="q14-1" name="q14" value="1" aria-label="1 分：非常不同意" /><label for="q14-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q14-2" name="q14" value="2" aria-label="2 分：不同意" /><label for="q14-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q14-3" name="q14" value="3" aria-label="3 分：中立／看情況" /><label for="q14-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q14-4" name="q14" value="4" aria-label="4 分：同意" /><label for="q14-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q14-5" name="q14" value="5" aria-label="5 分：非常同意" /><label for="q14-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q15" data-qid="q15" data-dimension-id="morality" data-dimension-name="道德與是非觀"><p class="q-title"><span class="q-num">15.</span>一個人犯錯後是否願意承擔責任與補救，會影響我對他的道德評價。</p><div class="choices" role="radiogroup" aria-label="第 15 題"><div class="choice"><input type="radio" id="q15-1" name="q15" value="1" aria-label="1 分：非常不同意" /><label for="q15-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q15-2" name="q15" value="2" aria-label="2 分：不同意" /><label for="q15-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q15-3" name="q15" value="3" aria-label="3 分：中立／看情況" /><label for="q15-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q15-4" name="q15" value="4" aria-label="4 分：同意" /><label for="q15-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q15-5" name="q15" value="5" aria-label="5 分：非常同意" /><label for="q15-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="society_fairness">
-<div class="dimension-head"><div class="dimension-kicker">面向 4 / 15</div><h2>社會與公平觀</h2></div>
-<div class="question" id="block-q16" data-qid="q16" data-dimension-id="society_fairness" data-dimension-name="社會與公平觀"><p class="q-title"><span class="q-num">16.</span>社會制度應盡量讓不同起點的人都擁有合理的發展機會。</p><div class="choices" role="radiogroup" aria-label="第 16 題"><div class="choice"><input type="radio" id="q16-1" name="q16" value="1" aria-label="1 分：非常不同意" /><label for="q16-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q16-2" name="q16" value="2" aria-label="2 分：不同意" /><label for="q16-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q16-3" name="q16" value="3" aria-label="3 分：中立／看情況" /><label for="q16-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q16-4" name="q16" value="4" aria-label="4 分：同意" /><label for="q16-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q16-5" name="q16" value="5" aria-label="5 分：非常同意" /><label for="q16-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q17" data-qid="q17" data-dimension-id="society_fairness" data-dimension-name="社會與公平觀"><p class="q-title"><span class="q-num">17.</span>公平不一定代表每個人得到完全一樣的資源或結果。</p><div class="choices" role="radiogroup" aria-label="第 17 題"><div class="choice"><input type="radio" id="q17-1" name="q17" value="1" aria-label="1 分：非常不同意" /><label for="q17-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q17-2" name="q17" value="2" aria-label="2 分：不同意" /><label for="q17-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q17-3" name="q17" value="3" aria-label="3 分：中立／看情況" /><label for="q17-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q17-4" name="q17" value="4" aria-label="4 分：同意" /><label for="q17-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q17-5" name="q17" value="5" aria-label="5 分：非常同意" /><label for="q17-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q18" data-qid="q18" data-dimension-id="society_fairness" data-dimension-name="社會與公平觀"><p class="q-title"><span class="q-num">18.</span>當制度性的不利長期存在時，社會可以採取額外措施來縮小差距。</p><div class="choices" role="radiogroup" aria-label="第 18 題"><div class="choice"><input type="radio" id="q18-1" name="q18" value="1" aria-label="1 分：非常不同意" /><label for="q18-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q18-2" name="q18" value="2" aria-label="2 分：不同意" /><label for="q18-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q18-3" name="q18" value="3" aria-label="3 分：中立／看情況" /><label for="q18-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q18-4" name="q18" value="4" aria-label="4 分：同意" /><label for="q18-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q18-5" name="q18" value="5" aria-label="5 分：非常同意" /><label for="q18-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q19" data-qid="q19" data-dimension-id="society_fairness" data-dimension-name="社會與公平觀"><p class="q-title"><span class="q-num">19.</span>享有較多資源與權力的人，應承擔較高程度的公共責任。</p><div class="choices" role="radiogroup" aria-label="第 19 題"><div class="choice"><input type="radio" id="q19-1" name="q19" value="1" aria-label="1 分：非常不同意" /><label for="q19-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q19-2" name="q19" value="2" aria-label="2 分：不同意" /><label for="q19-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q19-3" name="q19" value="3" aria-label="3 分：中立／看情況" /><label for="q19-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q19-4" name="q19" value="4" aria-label="4 分：同意" /><label for="q19-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q19-5" name="q19" value="5" aria-label="5 分：非常同意" /><label for="q19-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q20" data-qid="q20" data-dimension-id="society_fairness" data-dimension-name="社會與公平觀"><p class="q-title"><span class="q-num">20.</span>我能接受某些公共政策犧牲部分個人便利，以換取更大的社會整體利益。</p><div class="choices" role="radiogroup" aria-label="第 20 題"><div class="choice"><input type="radio" id="q20-1" name="q20" value="1" aria-label="1 分：非常不同意" /><label for="q20-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q20-2" name="q20" value="2" aria-label="2 分：不同意" /><label for="q20-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q20-3" name="q20" value="3" aria-label="3 分：中立／看情況" /><label for="q20-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q20-4" name="q20" value="4" aria-label="4 分：同意" /><label for="q20-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q20-5" name="q20" value="5" aria-label="5 分：非常同意" /><label for="q20-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="family">
-<div class="dimension-head"><div class="dimension-kicker">面向 5 / 15</div><h2>家庭觀</h2></div>
-<div class="question" id="block-q21" data-qid="q21" data-dimension-id="family" data-dimension-name="家庭觀"><p class="q-title"><span class="q-num">21.</span>成年後，即使與家人感情親近，也應保有獨立決定人生方向的權利。</p><div class="choices" role="radiogroup" aria-label="第 21 題"><div class="choice"><input type="radio" id="q21-1" name="q21" value="1" aria-label="1 分：非常不同意" /><label for="q21-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q21-2" name="q21" value="2" aria-label="2 分：不同意" /><label for="q21-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q21-3" name="q21" value="3" aria-label="3 分：中立／看情況" /><label for="q21-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q21-4" name="q21" value="4" aria-label="4 分：同意" /><label for="q21-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q21-5" name="q21" value="5" aria-label="5 分：非常同意" /><label for="q21-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q22" data-qid="q22" data-dimension-id="family" data-dimension-name="家庭觀"><p class="q-title"><span class="q-num">22.</span>家庭成員在彼此有需要時，通常應比一般人承擔更多互助責任。</p><div class="choices" role="radiogroup" aria-label="第 22 題"><div class="choice"><input type="radio" id="q22-1" name="q22" value="1" aria-label="1 分：非常不同意" /><label for="q22-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q22-2" name="q22" value="2" aria-label="2 分：不同意" /><label for="q22-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q22-3" name="q22" value="3" aria-label="3 分：中立／看情況" /><label for="q22-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q22-4" name="q22" value="4" aria-label="4 分：同意" /><label for="q22-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q22-5" name="q22" value="5" aria-label="5 分：非常同意" /><label for="q22-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q23" data-qid="q23" data-dimension-id="family" data-dimension-name="家庭觀"><p class="q-title"><span class="q-num">23.</span>維持家庭關係不代表必須接受長期傷害自己的相處方式。</p><div class="choices" role="radiogroup" aria-label="第 23 題"><div class="choice"><input type="radio" id="q23-1" name="q23" value="1" aria-label="1 分：非常不同意" /><label for="q23-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q23-2" name="q23" value="2" aria-label="2 分：不同意" /><label for="q23-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q23-3" name="q23" value="3" aria-label="3 分：中立／看情況" /><label for="q23-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q23-4" name="q23" value="4" aria-label="4 分：同意" /><label for="q23-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q23-5" name="q23" value="5" aria-label="5 分：非常同意" /><label for="q23-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q24" data-qid="q24" data-dimension-id="family" data-dimension-name="家庭觀"><p class="q-title"><span class="q-num">24.</span>重要的家庭決定應盡量透過溝通，而不是單純服從年長者或傳統角色。</p><div class="choices" role="radiogroup" aria-label="第 24 題"><div class="choice"><input type="radio" id="q24-1" name="q24" value="1" aria-label="1 分：非常不同意" /><label for="q24-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q24-2" name="q24" value="2" aria-label="2 分：不同意" /><label for="q24-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q24-3" name="q24" value="3" aria-label="3 分：中立／看情況" /><label for="q24-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q24-4" name="q24" value="4" aria-label="4 分：同意" /><label for="q24-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q24-5" name="q24" value="5" aria-label="5 分：非常同意" /><label for="q24-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q25" data-qid="q25" data-dimension-id="family" data-dimension-name="家庭觀"><p class="q-title"><span class="q-num">25.</span>我重視固定投入時間經營家人關係，即使生活忙碌也一樣。</p><div class="choices" role="radiogroup" aria-label="第 25 題"><div class="choice"><input type="radio" id="q25-1" name="q25" value="1" aria-label="1 分：非常不同意" /><label for="q25-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q25-2" name="q25" value="2" aria-label="2 分：不同意" /><label for="q25-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q25-3" name="q25" value="3" aria-label="3 分：中立／看情況" /><label for="q25-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q25-4" name="q25" value="4" aria-label="4 分：同意" /><label for="q25-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q25-5" name="q25" value="5" aria-label="5 分：非常同意" /><label for="q25-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="friendship">
-<div class="dimension-head"><div class="dimension-kicker">面向 6 / 15</div><h2>友情與人際觀</h2></div>
-<div class="question" id="block-q26" data-qid="q26" data-dimension-id="friendship" data-dimension-name="友情與人際觀"><p class="q-title"><span class="q-num">26.</span>真正的朋友不需要頻繁聯絡，但在重要時刻應彼此可靠。</p><div class="choices" role="radiogroup" aria-label="第 26 題"><div class="choice"><input type="radio" id="q26-1" name="q26" value="1" aria-label="1 分：非常不同意" /><label for="q26-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q26-2" name="q26" value="2" aria-label="2 分：不同意" /><label for="q26-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q26-3" name="q26" value="3" aria-label="3 分：中立／看情況" /><label for="q26-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q26-4" name="q26" value="4" aria-label="4 分：同意" /><label for="q26-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q26-5" name="q26" value="5" aria-label="5 分：非常同意" /><label for="q26-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q27" data-qid="q27" data-dimension-id="friendship" data-dimension-name="友情與人際觀"><p class="q-title"><span class="q-num">27.</span>當朋友的選擇明顯傷害他人時，我會傾向坦白表達不同意，而不是只支持他。</p><div class="choices" role="radiogroup" aria-label="第 27 題"><div class="choice"><input type="radio" id="q27-1" name="q27" value="1" aria-label="1 分：非常不同意" /><label for="q27-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q27-2" name="q27" value="2" aria-label="2 分：不同意" /><label for="q27-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q27-3" name="q27" value="3" aria-label="3 分：中立／看情況" /><label for="q27-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q27-4" name="q27" value="4" aria-label="4 分：同意" /><label for="q27-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q27-5" name="q27" value="5" aria-label="5 分：非常同意" /><label for="q27-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q28" data-qid="q28" data-dimension-id="friendship" data-dimension-name="友情與人際觀"><p class="q-title"><span class="q-num">28.</span>人際關係中，互惠與界線比單方面犧牲更健康。</p><div class="choices" role="radiogroup" aria-label="第 28 題"><div class="choice"><input type="radio" id="q28-1" name="q28" value="1" aria-label="1 分：非常不同意" /><label for="q28-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q28-2" name="q28" value="2" aria-label="2 分：不同意" /><label for="q28-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q28-3" name="q28" value="3" aria-label="3 分：中立／看情況" /><label for="q28-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q28-4" name="q28" value="4" aria-label="4 分：同意" /><label for="q28-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q28-5" name="q28" value="5" aria-label="5 分：非常同意" /><label for="q28-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q29" data-qid="q29" data-dimension-id="friendship" data-dimension-name="友情與人際觀"><p class="q-title"><span class="q-num">29.</span>我願意主動維持與重要朋友的關係，而不是完全依賴自然發展。</p><div class="choices" role="radiogroup" aria-label="第 29 題"><div class="choice"><input type="radio" id="q29-1" name="q29" value="1" aria-label="1 分：非常不同意" /><label for="q29-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q29-2" name="q29" value="2" aria-label="2 分：不同意" /><label for="q29-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q29-3" name="q29" value="3" aria-label="3 分：中立／看情況" /><label for="q29-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q29-4" name="q29" value="4" aria-label="4 分：同意" /><label for="q29-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q29-5" name="q29" value="5" aria-label="5 分：非常同意" /><label for="q29-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q30" data-qid="q30" data-dimension-id="friendship" data-dimension-name="友情與人際觀"><p class="q-title"><span class="q-num">30.</span>若一段友誼長期消耗多於支持，我可以接受逐漸拉開距離。</p><div class="choices" role="radiogroup" aria-label="第 30 題"><div class="choice"><input type="radio" id="q30-1" name="q30" value="1" aria-label="1 分：非常不同意" /><label for="q30-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q30-2" name="q30" value="2" aria-label="2 分：不同意" /><label for="q30-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q30-3" name="q30" value="3" aria-label="3 分：中立／看情況" /><label for="q30-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q30-4" name="q30" value="4" aria-label="4 分：同意" /><label for="q30-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q30-5" name="q30" value="5" aria-label="5 分：非常同意" /><label for="q30-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="career">
-<div class="dimension-head"><div class="dimension-kicker">面向 7 / 15</div><h2>工作與事業觀</h2></div>
-<div class="question" id="block-q31" data-qid="q31" data-dimension-id="career" data-dimension-name="工作與事業觀"><p class="q-title"><span class="q-num">31.</span>選擇工作時，成長空間與意義感對我不亞於薪資。</p><div class="choices" role="radiogroup" aria-label="第 31 題"><div class="choice"><input type="radio" id="q31-1" name="q31" value="1" aria-label="1 分：非常不同意" /><label for="q31-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q31-2" name="q31" value="2" aria-label="2 分：不同意" /><label for="q31-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q31-3" name="q31" value="3" aria-label="3 分：中立／看情況" /><label for="q31-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q31-4" name="q31" value="4" aria-label="4 分：同意" /><label for="q31-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q31-5" name="q31" value="5" aria-label="5 分：非常同意" /><label for="q31-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q32" data-qid="q32" data-dimension-id="career" data-dimension-name="工作與事業觀"><p class="q-title"><span class="q-num">32.</span>我願意為了重要的職涯目標，在一段時間內承受較高壓力或較少休閒。</p><div class="choices" role="radiogroup" aria-label="第 32 題"><div class="choice"><input type="radio" id="q32-1" name="q32" value="1" aria-label="1 分：非常不同意" /><label for="q32-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q32-2" name="q32" value="2" aria-label="2 分：不同意" /><label for="q32-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q32-3" name="q32" value="3" aria-label="3 分：中立／看情況" /><label for="q32-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q32-4" name="q32" value="4" aria-label="4 分：同意" /><label for="q32-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q32-5" name="q32" value="5" aria-label="5 分：非常同意" /><label for="q32-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q33" data-qid="q33" data-dimension-id="career" data-dimension-name="工作與事業觀"><p class="q-title"><span class="q-num">33.</span>工作不應成為衡量一個人全部價值的主要標準。</p><div class="choices" role="radiogroup" aria-label="第 33 題"><div class="choice"><input type="radio" id="q33-1" name="q33" value="1" aria-label="1 分：非常不同意" /><label for="q33-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q33-2" name="q33" value="2" aria-label="2 分：不同意" /><label for="q33-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q33-3" name="q33" value="3" aria-label="3 分：中立／看情況" /><label for="q33-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q33-4" name="q33" value="4" aria-label="4 分：同意" /><label for="q33-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q33-5" name="q33" value="5" aria-label="5 分：非常同意" /><label for="q33-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q34" data-qid="q34" data-dimension-id="career" data-dimension-name="工作與事業觀"><p class="q-title"><span class="q-num">34.</span>如果一份工作長期違背我的核心價值，即使待遇不錯，我也會考慮離開。</p><div class="choices" role="radiogroup" aria-label="第 34 題"><div class="choice"><input type="radio" id="q34-1" name="q34" value="1" aria-label="1 分：非常不同意" /><label for="q34-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q34-2" name="q34" value="2" aria-label="2 分：不同意" /><label for="q34-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q34-3" name="q34" value="3" aria-label="3 分：中立／看情況" /><label for="q34-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q34-4" name="q34" value="4" aria-label="4 分：同意" /><label for="q34-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q34-5" name="q34" value="5" aria-label="5 分：非常同意" /><label for="q34-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q35" data-qid="q35" data-dimension-id="career" data-dimension-name="工作與事業觀"><p class="q-title"><span class="q-num">35.</span>我重視專業自主與能決定工作方式的空間。</p><div class="choices" role="radiogroup" aria-label="第 35 題"><div class="choice"><input type="radio" id="q35-1" name="q35" value="1" aria-label="1 分：非常不同意" /><label for="q35-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q35-2" name="q35" value="2" aria-label="2 分：不同意" /><label for="q35-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q35-3" name="q35" value="3" aria-label="3 分：中立／看情況" /><label for="q35-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q35-4" name="q35" value="4" aria-label="4 分：同意" /><label for="q35-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q35-5" name="q35" value="5" aria-label="5 分：非常同意" /><label for="q35-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="lifestyle">
-<div class="dimension-head"><div class="dimension-kicker">面向 8 / 15</div><h2>生活方式與享樂觀</h2></div>
-<div class="question" id="block-q36" data-qid="q36" data-dimension-id="lifestyle" data-dimension-name="生活方式與享樂觀"><p class="q-title"><span class="q-num">36.</span>我認為生活品質不只是效率，也包括休息、興趣與享受當下。</p><div class="choices" role="radiogroup" aria-label="第 36 題"><div class="choice"><input type="radio" id="q36-1" name="q36" value="1" aria-label="1 分：非常不同意" /><label for="q36-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q36-2" name="q36" value="2" aria-label="2 分：不同意" /><label for="q36-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q36-3" name="q36" value="3" aria-label="3 分：中立／看情況" /><label for="q36-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q36-4" name="q36" value="4" aria-label="4 分：同意" /><label for="q36-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q36-5" name="q36" value="5" aria-label="5 分：非常同意" /><label for="q36-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q37" data-qid="q37" data-dimension-id="lifestyle" data-dimension-name="生活方式與享樂觀"><p class="q-title"><span class="q-num">37.</span>比起擁有更多物品，我更重視有品質的體驗與回憶。</p><div class="choices" role="radiogroup" aria-label="第 37 題"><div class="choice"><input type="radio" id="q37-1" name="q37" value="1" aria-label="1 分：非常不同意" /><label for="q37-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q37-2" name="q37" value="2" aria-label="2 分：不同意" /><label for="q37-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q37-3" name="q37" value="3" aria-label="3 分：中立／看情況" /><label for="q37-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q37-4" name="q37" value="4" aria-label="4 分：同意" /><label for="q37-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q37-5" name="q37" value="5" aria-label="5 分：非常同意" /><label for="q37-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q38" data-qid="q38" data-dimension-id="lifestyle" data-dimension-name="生活方式與享樂觀"><p class="q-title"><span class="q-num">38.</span>我喜歡為生活保留一定的隨性，不希望每件事都安排得非常精確。</p><div class="choices" role="radiogroup" aria-label="第 38 題"><div class="choice"><input type="radio" id="q38-1" name="q38" value="1" aria-label="1 分：非常不同意" /><label for="q38-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q38-2" name="q38" value="2" aria-label="2 分：不同意" /><label for="q38-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q38-3" name="q38" value="3" aria-label="3 分：中立／看情況" /><label for="q38-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q38-4" name="q38" value="4" aria-label="4 分：同意" /><label for="q38-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q38-5" name="q38" value="5" aria-label="5 分：非常同意" /><label for="q38-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q39" data-qid="q39" data-dimension-id="lifestyle" data-dimension-name="生活方式與享樂觀"><p class="q-title"><span class="q-num">39.</span>即使生活忙碌，我也認為固定照顧睡眠、飲食與身體狀態很重要。</p><div class="choices" role="radiogroup" aria-label="第 39 題"><div class="choice"><input type="radio" id="q39-1" name="q39" value="1" aria-label="1 分：非常不同意" /><label for="q39-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q39-2" name="q39" value="2" aria-label="2 分：不同意" /><label for="q39-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q39-3" name="q39" value="3" aria-label="3 分：中立／看情況" /><label for="q39-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q39-4" name="q39" value="4" aria-label="4 分：同意" /><label for="q39-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q39-5" name="q39" value="5" aria-label="5 分：非常同意" /><label for="q39-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q40" data-qid="q40" data-dimension-id="lifestyle" data-dimension-name="生活方式與享樂觀"><p class="q-title"><span class="q-num">40.</span>適度享樂本身有價值，不必每件事都具有生產力或明確成果。</p><div class="choices" role="radiogroup" aria-label="第 40 題"><div class="choice"><input type="radio" id="q40-1" name="q40" value="1" aria-label="1 分：非常不同意" /><label for="q40-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q40-2" name="q40" value="2" aria-label="2 分：不同意" /><label for="q40-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q40-3" name="q40" value="3" aria-label="3 分：中立／看情況" /><label for="q40-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q40-4" name="q40" value="4" aria-label="4 分：同意" /><label for="q40-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q40-5" name="q40" value="5" aria-label="5 分：非常同意" /><label for="q40-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="freedom_boundaries">
-<div class="dimension-head"><div class="dimension-kicker">面向 9 / 15</div><h2>自由與個人界線</h2></div>
-<div class="question" id="block-q41" data-qid="q41" data-dimension-id="freedom_boundaries" data-dimension-name="自由與個人界線"><p class="q-title"><span class="q-num">41.</span>只要沒有傷害他人，成年人應有很大的空間選擇自己的生活方式。</p><div class="choices" role="radiogroup" aria-label="第 41 題"><div class="choice"><input type="radio" id="q41-1" name="q41" value="1" aria-label="1 分：非常不同意" /><label for="q41-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q41-2" name="q41" value="2" aria-label="2 分：不同意" /><label for="q41-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q41-3" name="q41" value="3" aria-label="3 分：中立／看情況" /><label for="q41-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q41-4" name="q41" value="4" aria-label="4 分：同意" /><label for="q41-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q41-5" name="q41" value="5" aria-label="5 分：非常同意" /><label for="q41-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q42" data-qid="q42" data-dimension-id="freedom_boundaries" data-dimension-name="自由與個人界線"><p class="q-title"><span class="q-num">42.</span>即使關係很親近，我仍需要保留部分個人時間、隱私與獨處空間。</p><div class="choices" role="radiogroup" aria-label="第 42 題"><div class="choice"><input type="radio" id="q42-1" name="q42" value="1" aria-label="1 分：非常不同意" /><label for="q42-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q42-2" name="q42" value="2" aria-label="2 分：不同意" /><label for="q42-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q42-3" name="q42" value="3" aria-label="3 分：中立／看情況" /><label for="q42-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q42-4" name="q42" value="4" aria-label="4 分：同意" /><label for="q42-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q42-5" name="q42" value="5" aria-label="5 分：非常同意" /><label for="q42-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q43" data-qid="q43" data-dimension-id="freedom_boundaries" data-dimension-name="自由與個人界線"><p class="q-title"><span class="q-num">43.</span>我認為『關心』不應成為查看他人私人物品、帳號或訊息的理由。</p><div class="choices" role="radiogroup" aria-label="第 43 題"><div class="choice"><input type="radio" id="q43-1" name="q43" value="1" aria-label="1 分：非常不同意" /><label for="q43-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q43-2" name="q43" value="2" aria-label="2 分：不同意" /><label for="q43-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q43-3" name="q43" value="3" aria-label="3 分：中立／看情況" /><label for="q43-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q43-4" name="q43" value="4" aria-label="4 分：同意" /><label for="q43-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q43-5" name="q43" value="5" aria-label="5 分：非常同意" /><label for="q43-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q44" data-qid="q44" data-dimension-id="freedom_boundaries" data-dimension-name="自由與個人界線"><p class="q-title"><span class="q-num">44.</span>當別人的期待讓我感到勉強時，我有責任清楚表達界線。</p><div class="choices" role="radiogroup" aria-label="第 44 題"><div class="choice"><input type="radio" id="q44-1" name="q44" value="1" aria-label="1 分：非常不同意" /><label for="q44-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q44-2" name="q44" value="2" aria-label="2 分：不同意" /><label for="q44-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q44-3" name="q44" value="3" aria-label="3 分：中立／看情況" /><label for="q44-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q44-4" name="q44" value="4" aria-label="4 分：同意" /><label for="q44-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q44-5" name="q44" value="5" aria-label="5 分：非常同意" /><label for="q44-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q45" data-qid="q45" data-dimension-id="freedom_boundaries" data-dimension-name="自由與個人界線"><p class="q-title"><span class="q-num">45.</span>尊重一個人的拒絕，通常比說服他改變決定更重要。</p><div class="choices" role="radiogroup" aria-label="第 45 題"><div class="choice"><input type="radio" id="q45-1" name="q45" value="1" aria-label="1 分：非常不同意" /><label for="q45-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q45-2" name="q45" value="2" aria-label="2 分：不同意" /><label for="q45-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q45-3" name="q45" value="3" aria-label="3 分：中立／看情況" /><label for="q45-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q45-4" name="q45" value="4" aria-label="4 分：同意" /><label for="q45-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q45-5" name="q45" value="5" aria-label="5 分：非常同意" /><label for="q45-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="conflict">
-<div class="dimension-head"><div class="dimension-kicker">面向 10 / 15</div><h2>情緒與衝突處理</h2></div>
-<div class="question" id="block-q46" data-qid="q46" data-dimension-id="conflict" data-dimension-name="情緒與衝突處理"><p class="q-title"><span class="q-num">46.</span>發生衝突時，我傾向先弄清楚彼此真正的需求，而不是急著分出誰輸誰贏。</p><div class="choices" role="radiogroup" aria-label="第 46 題"><div class="choice"><input type="radio" id="q46-1" name="q46" value="1" aria-label="1 分：非常不同意" /><label for="q46-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q46-2" name="q46" value="2" aria-label="2 分：不同意" /><label for="q46-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q46-3" name="q46" value="3" aria-label="3 分：中立／看情況" /><label for="q46-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q46-4" name="q46" value="4" aria-label="4 分：同意" /><label for="q46-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q46-5" name="q46" value="5" aria-label="5 分：非常同意" /><label for="q46-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q47" data-qid="q47" data-dimension-id="conflict" data-dimension-name="情緒與衝突處理"><p class="q-title"><span class="q-num">47.</span>情緒強烈時，先暫停對話、等冷靜後再談，通常比立刻解決更好。</p><div class="choices" role="radiogroup" aria-label="第 47 題"><div class="choice"><input type="radio" id="q47-1" name="q47" value="1" aria-label="1 分：非常不同意" /><label for="q47-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q47-2" name="q47" value="2" aria-label="2 分：不同意" /><label for="q47-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q47-3" name="q47" value="3" aria-label="3 分：中立／看情況" /><label for="q47-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q47-4" name="q47" value="4" aria-label="4 分：同意" /><label for="q47-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q47-5" name="q47" value="5" aria-label="5 分：非常同意" /><label for="q47-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q48" data-qid="q48" data-dimension-id="conflict" data-dimension-name="情緒與衝突處理"><p class="q-title"><span class="q-num">48.</span>即使我覺得自己有道理，也應避免羞辱、威脅或故意刺激情緒。</p><div class="choices" role="radiogroup" aria-label="第 48 題"><div class="choice"><input type="radio" id="q48-1" name="q48" value="1" aria-label="1 分：非常不同意" /><label for="q48-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q48-2" name="q48" value="2" aria-label="2 分：不同意" /><label for="q48-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q48-3" name="q48" value="3" aria-label="3 分：中立／看情況" /><label for="q48-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q48-4" name="q48" value="4" aria-label="4 分：同意" /><label for="q48-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q48-5" name="q48" value="5" aria-label="5 分：非常同意" /><label for="q48-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q49" data-qid="q49" data-dimension-id="conflict" data-dimension-name="情緒與衝突處理"><p class="q-title"><span class="q-num">49.</span>我希望重要衝突最後能形成較具體的共識或下一步，而不只是把情緒說完。</p><div class="choices" role="radiogroup" aria-label="第 49 題"><div class="choice"><input type="radio" id="q49-1" name="q49" value="1" aria-label="1 分：非常不同意" /><label for="q49-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q49-2" name="q49" value="2" aria-label="2 分：不同意" /><label for="q49-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q49-3" name="q49" value="3" aria-label="3 分：中立／看情況" /><label for="q49-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q49-4" name="q49" value="4" aria-label="4 分：同意" /><label for="q49-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q49-5" name="q49" value="5" aria-label="5 分：非常同意" /><label for="q49-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q50" data-qid="q50" data-dimension-id="conflict" data-dimension-name="情緒與衝突處理"><p class="q-title"><span class="q-num">50.</span>我可以接受在衝突中承認自己部分有錯，而不把它視為失去立場。</p><div class="choices" role="radiogroup" aria-label="第 50 題"><div class="choice"><input type="radio" id="q50-1" name="q50" value="1" aria-label="1 分：非常不同意" /><label for="q50-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q50-2" name="q50" value="2" aria-label="2 分：不同意" /><label for="q50-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q50-3" name="q50" value="3" aria-label="3 分：中立／看情況" /><label for="q50-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q50-4" name="q50" value="4" aria-label="4 分：同意" /><label for="q50-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q50-5" name="q50" value="5" aria-label="5 分：非常同意" /><label for="q50-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="learning_growth">
-<div class="dimension-head"><div class="dimension-kicker">面向 11 / 15</div><h2>學習與成長觀</h2></div>
-<div class="question" id="block-q51" data-qid="q51" data-dimension-id="learning_growth" data-dimension-name="學習與成長觀"><p class="q-title"><span class="q-num">51.</span>我願意主動接觸與自己原本立場不同的觀點。</p><div class="choices" role="radiogroup" aria-label="第 51 題"><div class="choice"><input type="radio" id="q51-1" name="q51" value="1" aria-label="1 分：非常不同意" /><label for="q51-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q51-2" name="q51" value="2" aria-label="2 分：不同意" /><label for="q51-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q51-3" name="q51" value="3" aria-label="3 分：中立／看情況" /><label for="q51-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q51-4" name="q51" value="4" aria-label="4 分：同意" /><label for="q51-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q51-5" name="q51" value="5" aria-label="5 分：非常同意" /><label for="q51-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q52" data-qid="q52" data-dimension-id="learning_growth" data-dimension-name="學習與成長觀"><p class="q-title"><span class="q-num">52.</span>當新證據足夠有力時，改變原本看法是一種成熟，而不是搖擺不定。</p><div class="choices" role="radiogroup" aria-label="第 52 題"><div class="choice"><input type="radio" id="q52-1" name="q52" value="1" aria-label="1 分：非常不同意" /><label for="q52-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q52-2" name="q52" value="2" aria-label="2 分：不同意" /><label for="q52-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q52-3" name="q52" value="3" aria-label="3 分：中立／看情況" /><label for="q52-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q52-4" name="q52" value="4" aria-label="4 分：同意" /><label for="q52-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q52-5" name="q52" value="5" aria-label="5 分：非常同意" /><label for="q52-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q53" data-qid="q53" data-dimension-id="learning_growth" data-dimension-name="學習與成長觀"><p class="q-title"><span class="q-num">53.</span>我重視持續學習，即使學習內容不一定立刻帶來實際利益。</p><div class="choices" role="radiogroup" aria-label="第 53 題"><div class="choice"><input type="radio" id="q53-1" name="q53" value="1" aria-label="1 分：非常不同意" /><label for="q53-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q53-2" name="q53" value="2" aria-label="2 分：不同意" /><label for="q53-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q53-3" name="q53" value="3" aria-label="3 分：中立／看情況" /><label for="q53-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q53-4" name="q53" value="4" aria-label="4 分：同意" /><label for="q53-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q53-5" name="q53" value="5" aria-label="5 分：非常同意" /><label for="q53-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q54" data-qid="q54" data-dimension-id="learning_growth" data-dimension-name="學習與成長觀"><p class="q-title"><span class="q-num">54.</span>做錯事後，比起證明自己其實沒錯，我更重視找出下次怎麼做得更好。</p><div class="choices" role="radiogroup" aria-label="第 54 題"><div class="choice"><input type="radio" id="q54-1" name="q54" value="1" aria-label="1 分：非常不同意" /><label for="q54-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q54-2" name="q54" value="2" aria-label="2 分：不同意" /><label for="q54-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q54-3" name="q54" value="3" aria-label="3 分：中立／看情況" /><label for="q54-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q54-4" name="q54" value="4" aria-label="4 分：同意" /><label for="q54-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q54-5" name="q54" value="5" aria-label="5 分：非常同意" /><label for="q54-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q55" data-qid="q55" data-dimension-id="learning_growth" data-dimension-name="學習與成長觀"><p class="q-title"><span class="q-num">55.</span>我相信多數能力都能透過長期練習與回饋逐步提升。</p><div class="choices" role="radiogroup" aria-label="第 55 題"><div class="choice"><input type="radio" id="q55-1" name="q55" value="1" aria-label="1 分：非常不同意" /><label for="q55-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q55-2" name="q55" value="2" aria-label="2 分：不同意" /><label for="q55-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q55-3" name="q55" value="3" aria-label="3 分：中立／看情況" /><label for="q55-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q55-4" name="q55" value="4" aria-label="4 分：同意" /><label for="q55-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q55-5" name="q55" value="5" aria-label="5 分：非常同意" /><label for="q55-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="tech_environment">
-<div class="dimension-head"><div class="dimension-kicker">面向 12 / 15</div><h2>科技與環境觀</h2></div>
-<div class="question" id="block-q56" data-qid="q56" data-dimension-id="tech_environment" data-dimension-name="科技與環境觀"><p class="q-title"><span class="q-num">56.</span>只要能明顯提升生活或工作品質，我通常願意嘗試新的科技工具。</p><div class="choices" role="radiogroup" aria-label="第 56 題"><div class="choice"><input type="radio" id="q56-1" name="q56" value="1" aria-label="1 分：非常不同意" /><label for="q56-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q56-2" name="q56" value="2" aria-label="2 分：不同意" /><label for="q56-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q56-3" name="q56" value="3" aria-label="3 分：中立／看情況" /><label for="q56-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q56-4" name="q56" value="4" aria-label="4 分：同意" /><label for="q56-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q56-5" name="q56" value="5" aria-label="5 分：非常同意" /><label for="q56-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q57" data-qid="q57" data-dimension-id="tech_environment" data-dimension-name="科技與環境觀"><p class="q-title"><span class="q-num">57.</span>科技便利不應凌駕於隱私、安全與人的自主權。</p><div class="choices" role="radiogroup" aria-label="第 57 題"><div class="choice"><input type="radio" id="q57-1" name="q57" value="1" aria-label="1 分：非常不同意" /><label for="q57-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q57-2" name="q57" value="2" aria-label="2 分：不同意" /><label for="q57-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q57-3" name="q57" value="3" aria-label="3 分：中立／看情況" /><label for="q57-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q57-4" name="q57" value="4" aria-label="4 分：同意" /><label for="q57-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q57-5" name="q57" value="5" aria-label="5 分：非常同意" /><label for="q57-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q58" data-qid="q58" data-dimension-id="tech_environment" data-dimension-name="科技與環境觀"><p class="q-title"><span class="q-num">58.</span>個人即使力量有限，也應為減少資源浪費與環境負擔做出合理改變。</p><div class="choices" role="radiogroup" aria-label="第 58 題"><div class="choice"><input type="radio" id="q58-1" name="q58" value="1" aria-label="1 分：非常不同意" /><label for="q58-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q58-2" name="q58" value="2" aria-label="2 分：不同意" /><label for="q58-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q58-3" name="q58" value="3" aria-label="3 分：中立／看情況" /><label for="q58-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q58-4" name="q58" value="4" aria-label="4 分：同意" /><label for="q58-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q58-5" name="q58" value="5" aria-label="5 分：非常同意" /><label for="q58-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q59" data-qid="q59" data-dimension-id="tech_environment" data-dimension-name="科技與環境觀"><p class="q-title"><span class="q-num">59.</span>企業與政府在科技發展造成重大社會風險時，應承擔主動管理責任。</p><div class="choices" role="radiogroup" aria-label="第 59 題"><div class="choice"><input type="radio" id="q59-1" name="q59" value="1" aria-label="1 分：非常不同意" /><label for="q59-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q59-2" name="q59" value="2" aria-label="2 分：不同意" /><label for="q59-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q59-3" name="q59" value="3" aria-label="3 分：中立／看情況" /><label for="q59-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q59-4" name="q59" value="4" aria-label="4 分：同意" /><label for="q59-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q59-5" name="q59" value="5" aria-label="5 分：非常同意" /><label for="q59-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q60" data-qid="q60" data-dimension-id="tech_environment" data-dimension-name="科技與環境觀"><p class="q-title"><span class="q-num">60.</span>面對環境問題，我可以接受部分成本上升或便利性下降，以換取更長期的永續。</p><div class="choices" role="radiogroup" aria-label="第 60 題"><div class="choice"><input type="radio" id="q60-1" name="q60" value="1" aria-label="1 分：非常不同意" /><label for="q60-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q60-2" name="q60" value="2" aria-label="2 分：不同意" /><label for="q60-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q60-3" name="q60" value="3" aria-label="3 分：中立／看情況" /><label for="q60-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q60-4" name="q60" value="4" aria-label="4 分：同意" /><label for="q60-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q60-5" name="q60" value="5" aria-label="5 分：非常同意" /><label for="q60-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="risk_safety">
-<div class="dimension-head"><div class="dimension-kicker">面向 13 / 15</div><h2>風險與安全觀</h2></div>
-<div class="question" id="block-q61" data-qid="q61" data-dimension-id="risk_safety" data-dimension-name="風險與安全觀"><p class="q-title"><span class="q-num">61.</span>面對重大決定時，我偏好先蒐集足夠資訊，再採取行動。</p><div class="choices" role="radiogroup" aria-label="第 61 題"><div class="choice"><input type="radio" id="q61-1" name="q61" value="1" aria-label="1 分：非常不同意" /><label for="q61-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q61-2" name="q61" value="2" aria-label="2 分：不同意" /><label for="q61-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q61-3" name="q61" value="3" aria-label="3 分：中立／看情況" /><label for="q61-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q61-4" name="q61" value="4" aria-label="4 分：同意" /><label for="q61-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q61-5" name="q61" value="5" aria-label="5 分：非常同意" /><label for="q61-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q62" data-qid="q62" data-dimension-id="risk_safety" data-dimension-name="風險與安全觀"><p class="q-title"><span class="q-num">62.</span>即使有失敗可能，只要潛在收穫值得，我願意嘗試風險可控的新選擇。</p><div class="choices" role="radiogroup" aria-label="第 62 題"><div class="choice"><input type="radio" id="q62-1" name="q62" value="1" aria-label="1 分：非常不同意" /><label for="q62-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q62-2" name="q62" value="2" aria-label="2 分：不同意" /><label for="q62-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q62-3" name="q62" value="3" aria-label="3 分：中立／看情況" /><label for="q62-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q62-4" name="q62" value="4" aria-label="4 分：同意" /><label for="q62-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q62-5" name="q62" value="5" aria-label="5 分：非常同意" /><label for="q62-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q63" data-qid="q63" data-dimension-id="risk_safety" data-dimension-name="風險與安全觀"><p class="q-title"><span class="q-num">63.</span>穩定與可預測性對我的生活滿意度非常重要。</p><div class="choices" role="radiogroup" aria-label="第 63 題"><div class="choice"><input type="radio" id="q63-1" name="q63" value="1" aria-label="1 分：非常不同意" /><label for="q63-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q63-2" name="q63" value="2" aria-label="2 分：不同意" /><label for="q63-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q63-3" name="q63" value="3" aria-label="3 分：中立／看情況" /><label for="q63-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q63-4" name="q63" value="4" aria-label="4 分：同意" /><label for="q63-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q63-5" name="q63" value="5" aria-label="5 分：非常同意" /><label for="q63-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q64" data-qid="q64" data-dimension-id="risk_safety" data-dimension-name="風險與安全觀"><p class="q-title"><span class="q-num">64.</span>重要計畫最好預留備案，而不是只依賴最理想的情況發生。</p><div class="choices" role="radiogroup" aria-label="第 64 題"><div class="choice"><input type="radio" id="q64-1" name="q64" value="1" aria-label="1 分：非常不同意" /><label for="q64-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q64-2" name="q64" value="2" aria-label="2 分：不同意" /><label for="q64-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q64-3" name="q64" value="3" aria-label="3 分：中立／看情況" /><label for="q64-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q64-4" name="q64" value="4" aria-label="4 分：同意" /><label for="q64-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q64-5" name="q64" value="5" aria-label="5 分：非常同意" /><label for="q64-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q65" data-qid="q65" data-dimension-id="risk_safety" data-dimension-name="風險與安全觀"><p class="q-title"><span class="q-num">65.</span>當風險涉及他人的安全或重大利益時，我會採取比只影響自己更保守的標準。</p><div class="choices" role="radiogroup" aria-label="第 65 題"><div class="choice"><input type="radio" id="q65-1" name="q65" value="1" aria-label="1 分：非常不同意" /><label for="q65-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q65-2" name="q65" value="2" aria-label="2 分：不同意" /><label for="q65-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q65-3" name="q65" value="3" aria-label="3 分：中立／看情況" /><label for="q65-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q65-4" name="q65" value="4" aria-label="4 分：同意" /><label for="q65-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q65-5" name="q65" value="5" aria-label="5 分：非常同意" /><label for="q65-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="love_intimacy">
-<div class="dimension-head"><div class="dimension-kicker">面向 14 / 15</div><h2>愛情與親密關係觀</h2></div>
-<div class="question" id="block-q66" data-qid="q66" data-dimension-id="love_intimacy" data-dimension-name="愛情與親密關係觀"><p class="q-title"><span class="q-num">66.</span>親密關係中，坦誠溝通需求與不滿，比期待對方自己猜到更重要。</p><div class="choices" role="radiogroup" aria-label="第 66 題"><div class="choice"><input type="radio" id="q66-1" name="q66" value="1" aria-label="1 分：非常不同意" /><label for="q66-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q66-2" name="q66" value="2" aria-label="2 分：不同意" /><label for="q66-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q66-3" name="q66" value="3" aria-label="3 分：中立／看情況" /><label for="q66-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q66-4" name="q66" value="4" aria-label="4 分：同意" /><label for="q66-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q66-5" name="q66" value="5" aria-label="5 分：非常同意" /><label for="q66-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q67" data-qid="q67" data-dimension-id="love_intimacy" data-dimension-name="愛情與親密關係觀"><p class="q-title"><span class="q-num">67.</span>穩定的親密關係仍應允許雙方保有獨立的興趣、朋友與成長空間。</p><div class="choices" role="radiogroup" aria-label="第 67 題"><div class="choice"><input type="radio" id="q67-1" name="q67" value="1" aria-label="1 分：非常不同意" /><label for="q67-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q67-2" name="q67" value="2" aria-label="2 分：不同意" /><label for="q67-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q67-3" name="q67" value="3" aria-label="3 分：中立／看情況" /><label for="q67-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q67-4" name="q67" value="4" aria-label="4 分：同意" /><label for="q67-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q67-5" name="q67" value="5" aria-label="5 分：非常同意" /><label for="q67-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q68" data-qid="q68" data-dimension-id="love_intimacy" data-dimension-name="愛情與親密關係觀"><p class="q-title"><span class="q-num">68.</span>我重視透過具體行動持續經營親密感，而不只依賴感覺自然存在。</p><div class="choices" role="radiogroup" aria-label="第 68 題"><div class="choice"><input type="radio" id="q68-1" name="q68" value="1" aria-label="1 分：非常不同意" /><label for="q68-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q68-2" name="q68" value="2" aria-label="2 分：不同意" /><label for="q68-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q68-3" name="q68" value="3" aria-label="3 分：中立／看情況" /><label for="q68-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q68-4" name="q68" value="4" aria-label="4 分：同意" /><label for="q68-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q68-5" name="q68" value="5" aria-label="5 分：非常同意" /><label for="q68-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q69" data-qid="q69" data-dimension-id="love_intimacy" data-dimension-name="愛情與親密關係觀"><p class="q-title"><span class="q-num">69.</span>重大承諾應建立在價值觀、生活安排與責任分工都充分討論的基礎上。</p><div class="choices" role="radiogroup" aria-label="第 69 題"><div class="choice"><input type="radio" id="q69-1" name="q69" value="1" aria-label="1 分：非常不同意" /><label for="q69-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q69-2" name="q69" value="2" aria-label="2 分：不同意" /><label for="q69-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q69-3" name="q69" value="3" aria-label="3 分：中立／看情況" /><label for="q69-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q69-4" name="q69" value="4" aria-label="4 分：同意" /><label for="q69-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q69-5" name="q69" value="5" aria-label="5 分：非常同意" /><label for="q69-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q70" data-qid="q70" data-dimension-id="love_intimacy" data-dimension-name="愛情與親密關係觀"><p class="q-title"><span class="q-num">70.</span>安全感不應以限制對方正常社交、自由或隱私為主要代價。</p><div class="choices" role="radiogroup" aria-label="第 70 題"><div class="choice"><input type="radio" id="q70-1" name="q70" value="1" aria-label="1 分：非常不同意" /><label for="q70-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q70-2" name="q70" value="2" aria-label="2 分：不同意" /><label for="q70-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q70-3" name="q70" value="3" aria-label="3 分：中立／看情況" /><label for="q70-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q70-4" name="q70" value="4" aria-label="4 分：同意" /><label for="q70-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q70-5" name="q70" value="5" aria-label="5 分：非常同意" /><label for="q70-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
-<section class="dimension" data-dimension-id="life_happiness">
-<div class="dimension-head"><div class="dimension-kicker">面向 15 / 15</div><h2>生命與幸福觀</h2></div>
-<div class="question" id="block-q71" data-qid="q71" data-dimension-id="life_happiness" data-dimension-name="生命與幸福觀"><p class="q-title"><span class="q-num">71.</span>幸福對我而言，更接近長期的充實與安定，而不只是頻繁的快樂情緒。</p><div class="choices" role="radiogroup" aria-label="第 71 題"><div class="choice"><input type="radio" id="q71-1" name="q71" value="1" aria-label="1 分：非常不同意" /><label for="q71-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q71-2" name="q71" value="2" aria-label="2 分：不同意" /><label for="q71-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q71-3" name="q71" value="3" aria-label="3 分：中立／看情況" /><label for="q71-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q71-4" name="q71" value="4" aria-label="4 分：同意" /><label for="q71-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q71-5" name="q71" value="5" aria-label="5 分：非常同意" /><label for="q71-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q72" data-qid="q72" data-dimension-id="life_happiness" data-dimension-name="生命與幸福觀"><p class="q-title"><span class="q-num">72.</span>我認為有意義的人際連結，是人生幸福的重要來源之一。</p><div class="choices" role="radiogroup" aria-label="第 72 題"><div class="choice"><input type="radio" id="q72-1" name="q72" value="1" aria-label="1 分：非常不同意" /><label for="q72-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q72-2" name="q72" value="2" aria-label="2 分：不同意" /><label for="q72-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q72-3" name="q72" value="3" aria-label="3 分：中立／看情況" /><label for="q72-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q72-4" name="q72" value="4" aria-label="4 分：同意" /><label for="q72-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q72-5" name="q72" value="5" aria-label="5 分：非常同意" /><label for="q72-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q73" data-qid="q73" data-dimension-id="life_happiness" data-dimension-name="生命與幸福觀"><p class="q-title"><span class="q-num">73.</span>即使外在條件不完美，我仍重視培養感恩、好奇與享受日常的能力。</p><div class="choices" role="radiogroup" aria-label="第 73 題"><div class="choice"><input type="radio" id="q73-1" name="q73" value="1" aria-label="1 分：非常不同意" /><label for="q73-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q73-2" name="q73" value="2" aria-label="2 分：不同意" /><label for="q73-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q73-3" name="q73" value="3" aria-label="3 分：中立／看情況" /><label for="q73-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q73-4" name="q73" value="4" aria-label="4 分：同意" /><label for="q73-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q73-5" name="q73" value="5" aria-label="5 分：非常同意" /><label for="q73-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q74" data-qid="q74" data-dimension-id="life_happiness" data-dimension-name="生命與幸福觀"><p class="q-title"><span class="q-num">74.</span>對我而言，擁有可自主安排的時間，是幸福的重要部分。</p><div class="choices" role="radiogroup" aria-label="第 74 題"><div class="choice"><input type="radio" id="q74-1" name="q74" value="1" aria-label="1 分：非常不同意" /><label for="q74-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q74-2" name="q74" value="2" aria-label="2 分：不同意" /><label for="q74-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q74-3" name="q74" value="3" aria-label="3 分：中立／看情況" /><label for="q74-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q74-4" name="q74" value="4" aria-label="4 分：同意" /><label for="q74-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q74-5" name="q74" value="5" aria-label="5 分：非常同意" /><label for="q74-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-<div class="question" id="block-q75" data-qid="q75" data-dimension-id="life_happiness" data-dimension-name="生命與幸福觀"><p class="q-title"><span class="q-num">75.</span>如果人生有限，我希望把更多時間投入真正重要的人與事，而不是只追求社會認可。</p><div class="choices" role="radiogroup" aria-label="第 75 題"><div class="choice"><input type="radio" id="q75-1" name="q75" value="1" aria-label="1 分：非常不同意" /><label for="q75-1"><span class="choice-score">1</span><span class="choice-text">非常不同意</span></label></div><div class="choice"><input type="radio" id="q75-2" name="q75" value="2" aria-label="2 分：不同意" /><label for="q75-2"><span class="choice-score">2</span><span class="choice-text">不同意</span></label></div><div class="choice"><input type="radio" id="q75-3" name="q75" value="3" aria-label="3 分：中立／看情況" /><label for="q75-3"><span class="choice-score">3</span><span class="choice-text">中立／看情況</span></label></div><div class="choice"><input type="radio" id="q75-4" name="q75" value="4" aria-label="4 分：同意" /><label for="q75-4"><span class="choice-score">4</span><span class="choice-text">同意</span></label></div><div class="choice"><input type="radio" id="q75-5" name="q75" value="5" aria-label="5 分：非常同意" /><label for="q75-5"><span class="choice-score">5</span><span class="choice-text">非常同意</span></label></div></div></div>
-</section>
+  <section id="finishScreen" class="card finish-card hidden">
+    <div class="finish-icon">✓</div><h1>測驗完成</h1>
+    <p class="muted">請下載 JSON，並將 JSON 上傳至指定的 AI 職涯分析工具進行分析。</p>
+    <div class="finish-actions"><button id="downloadBtn" class="btn btn-primary" type="button">下載作答 JSON</button><button id="resetBtn" class="btn btn-danger" type="button">重新開始／下一位填寫者</button></div>
+  </section>
 </div>
-      <section class="actions">
-        <div class="action-row">
-          <button type="button" id="downloadBtn" class="primary">完成並下載 JSON</button>
-          <button type="button" id="clearBtn" class="secondary">清除全部答案</button>
-        </div>
-        <div id="exportPanel" class="export-panel" aria-live="polite">
-          <h3>JSON 已產生</h3>
-          <p class="export-help">如果手機沒有自動下載，請使用下方「分享／儲存 JSON」或「複製 JSON」。複製後也可以貼到記事本儲存，或直接貼回 ChatGPT 給我分析。</p>
-          <textarea id="jsonOutput" readonly spellcheck="false"></textarea>
-          <div class="export-actions">
-            <button type="button" id="shareBtn" class="primary">分享／儲存 JSON</button>
-            <button type="button" id="copyBtn" class="secondary">複製 JSON</button>
-            <button type="button" id="retryDownloadBtn" class="secondary">再次嘗試下載</button>
-          </div>
-          <div id="runtimeNote" class="runtime-note">若這些按鈕也完全沒反應，代表目前開啟方式禁止 JavaScript，請改用 Safari 或 Chrome 開啟此 HTML。</div>
-        </div>
-        <div id="status" class="status" aria-live="polite"></div>
-      </section>
-    </form>
-    <p class="footnote">分析公式：每題相似度＝100%－（雙方答案差距 × 25%）；各面向相似度＝該面向 5 題平均；整體相似度＝全部 75 題平均。</p>
-  </main>
+<script>
+'use strict';
+const QUESTIONS=[{"question_id":"Q001","text":"遇到資訊很多的問題時，我通常會先把問題拆成幾個部分，再逐一釐清。"},{"question_id":"Q002","text":"面對由多個步驟組成的事情，我會自然留意前後環節如何互相影響。"},{"question_id":"Q003","text":"看到一組資訊時，如果能整理成數字、比例或趨勢，我通常會更容易掌握重點。"},{"question_id":"Q004","text":"沒有現成做法時，我會自然想到幾種不同的處理方式，而不只沿用第一個想到的方案。"},{"question_id":"Q005","text":"只看文字說明很複雜時，我常會自己畫成圖，或在腦中形成位置關係。"},{"question_id":"Q006","text":"需要整理複雜想法時，把它寫成文字通常能幫我釐清結構與重點。"},{"question_id":"Q007","text":"處理資訊或成果時，我會自然注意數字、格式、順序或用詞中的小差異。"},{"question_id":"Q008","text":"比起頻繁切換不同任務，我更容易在能長時間深入處理同一個主題時進入狀態。"},{"question_id":"Q009","text":"比起只討論原理，我通常更想實際操作、測試或調整某個東西來理解它。"},{"question_id":"Q010","text":"一天中如果需要和許多不同的人來回互動，我通常不會因此很快耗盡精力。"},{"question_id":"Q011","text":"別人描述一個困難時，我通常會先留意他的處境與真正需要，而不只看事情表面。"},{"question_id":"Q012","text":"需要讓不同人對同一件事有共同理解時，我願意主動說明、提問並確認彼此理解是否一致。"},{"question_id":"Q013","text":"大家偏好的方案不同時，如果我認為某個方向更合適，我通常願意提出理由爭取認同。"},{"question_id":"Q014","text":"共同任務停滯、沒有人決定下一步時，我通常願意先提出方向並推動大家往前。"},{"question_id":"Q015","text":"共同完成事情時，我傾向主動共享進度與資訊，也會了解別人的限制，讓彼此能及時調整。"},{"question_id":"Q016","text":"只要目標與限制清楚，我通常希望自己決定方法與順序，而不是被規定每一步。"},{"question_id":"Q017","text":"規則、流程與判斷標準越清楚，我通常越容易安心投入。"},{"question_id":"Q018","text":"資訊還不完整時，只要風險可控，我通常能先做出暫時判斷並繼續推進。"},{"question_id":"Q019","text":"當兩個選擇差異不大時，如果其中一個可能帶來較大成果但結果較不確定，我通常願意考慮它。"},{"question_id":"Q020","text":"工作內容若經常接觸新情境或不同任務，通常會讓我更有精神。"},{"question_id":"Q021","text":"遇到陌生主題時，即使不是立刻需要，我也常會想多了解它怎麼運作。"},{"question_id":"Q022","text":"面對較大的任務時，我通常會先整理順序、時間點與需要協調的資源。"},{"question_id":"Q023","text":"原本的安排突然改變時，我通常能快速重新排出新的做法與優先順序。"},{"question_id":"Q024","text":"即使沒有人知道，只要完成一個很困難的目標，我仍然會有很強的成就感。"},{"question_id":"Q025","text":"需要做重要判斷時，我會想先找資料、數據、紀錄、測試或其他可驗證的依據。"},{"question_id":"Q026","text":"自己的成果被具體看見與肯定，會明顯提升我持續投入的動力。"},{"question_id":"Q027","text":"在兩個內容都能接受的選擇中，薪資與福利差異通常會明顯影響我的決定。"},{"question_id":"Q028","text":"短時間內能持續完成一個個清楚的小成果，通常會讓我更有工作動力。"},{"question_id":"Q029","text":"如果一個流程會重複很多次，我常會想找出哪一步可以更省時間、少出錯或更順。"},{"question_id":"Q030","text":"比起廣泛接觸很多主題，我更願意在少數領域長期累積深度。"},{"question_id":"Q031","text":"在進行重要任務時，我希望在完成前能固定收到幾次回饋，以確認方向是否需要校正。"},{"question_id":"Q032","text":"即使內容很有吸引力，如果長期無法保留穩定的私人時間，我也很難接受。"},{"question_id":"Q033","text":"當結果和預期不同時，我會想先找出是哪一段推理或因果出了問題，再決定要不要換做法。"},{"question_id":"Q034","text":"如果一段時間看不到明顯進展，我通常會想先換別的事情做。"},{"question_id":"Q035","text":"在共同任務中，即使各部分彼此相依，我仍比較喜歡各自完成，最後再一次整合。"},{"question_id":"Q036","text":"同時有幾件事撞在一起時，我會先重新排序優先順序，再決定各自投入多少時間。"},{"question_id":"Q037","text":"已有可行方法時，我通常願意做小幅調整並比較效果，看能不能再更好。"},{"question_id":"Q038","text":"已有一個可行方法時，我通常不太想另外發展一套全新的做法。"},{"question_id":"Q039","text":"知道自己的成果確實讓別人的處境變得更好，會讓我更覺得投入是有意義的。"},{"question_id":"Q040","text":"遇到沒有明確答案或清楚標準的任務時，我通常很難放心開始。"},{"question_id":"Q041","text":"時間很趕、資料又不完整時，我通常更願意相信第一印象，而不是再花時間查證。"},{"question_id":"Q042","text":"工作是否經常打亂原本的休息與生活安排，會明顯影響我對它的接受程度。"},{"question_id":"Q043","text":"即使時間有限，在完成一件重要事情前，我通常仍會再核對最容易出錯的細節。"},{"question_id":"Q044","text":"如果一件共同成果需要有人對整體負責，我通常願意承擔取捨與最後決定的責任。"},{"question_id":"Q045","text":"只要目前的方法已經足夠使用，我通常不太想額外花時間學新的工具或知識。"},{"question_id":"Q046","text":"即使一項工作要很久才看得到階段成果，我通常也不會因此降低投入。"},{"question_id":"Q047","text":"即使有數據可用，我通常還是更習慣用文字描述或整體感受來理解情況。"},{"question_id":"Q048","text":"如果能選擇，我更偏好長時間自己處理事情，而不是頻繁與不同的人接觸。"},{"question_id":"Q049","text":"即使幾乎沒有既定流程或標準，我通常也能直接開始，不太需要先把規範補齊。"},{"question_id":"Q050","text":"目標如果有一定難度、需要努力突破，通常會比很容易完成的事情更能激起我的投入。"},{"question_id":"Q051","text":"我喜歡聽取別人指出盲點或提供意見，但最後如何完成仍希望由自己決定。"},{"question_id":"Q052","text":"如果資訊可以用圖示或示範表達，我通常不太想再花時間閱讀或整理成文字。"},{"question_id":"Q053","text":"對方一開始不接受我的觀點時，我常會換一種切入方式，看看能否改變他的判斷。"},{"question_id":"Q054","text":"工作內容頻繁改變時，我通常會更想回到熟悉而穩定的模式。"},{"question_id":"Q055","text":"即使工作內容很符合期待，我仍會把待遇是否合理視為重要的選擇條件。"},{"question_id":"Q056","text":"一個局部問題反覆出現時，我常會往前後環節或其他相關部分找可能的連動原因。"},{"question_id":"Q057","text":"接觸陌生的工具、設備或系統時，我常會透過實際試用來摸清它怎麼運作。"},{"question_id":"Q058","text":"如果完成一件事的過程需要頻繁先取得他人同意，我通常會覺得難以發揮。"},{"question_id":"Q059","text":"原先的方法突然不能用時，我通常能在不久後轉換到另一種可行做法。"},{"question_id":"Q060","text":"當一個主題需要長時間反覆鑽研細節時，我通常會想換到新的領域。"},{"question_id":"Q061","text":"看到版面、物件或空間安排時，我會自然注意比例、位置與彼此關係。"},{"question_id":"Q062","text":"討論變得混亂時，我常會把重點重新整理成大家能接得上的說法。"},{"question_id":"Q063","text":"面對結果有明顯不確定性的選擇時，我通常會優先選較可預測的方案，即使可能少一些收穫。"},{"question_id":"Q064","text":"知道別人有注意到我的貢獻，通常會讓我更願意持續投入同類型的任務。"},{"question_id":"Q065","text":"需要重新安排物件、區域或資訊版面時，我常會先在腦中想像調整後的樣子。"},{"question_id":"Q066","text":"在共同任務中遇到複雜內容時，我比較希望只靠文件或訊息傳遞，盡量少做即時來回說明。"},{"question_id":"Q067","text":"面對有多種合理解法的問題時，我能先選一個假設去試，而不需要先確定唯一正解。"},{"question_id":"Q068","text":"當工作責任或負擔明顯增加時，我會很在意報酬是否也有相應提升。"},{"question_id":"Q069","text":"只要整體感覺合理，我通常不會特別追查每一步之間是否真的有因果關係。"},{"question_id":"Q070","text":"進入一個不熟悉的群體共同完成事情時，我通常願意主動增加互動，而不是只維持必要聯絡。"},{"question_id":"Q071","text":"在需要共同決定方向時，只要別人已經有自己的選擇，即使我認為還有更好的方案，我通常也不想花力氣影響他。"},{"question_id":"Q072","text":"在容易出現小差錯的重複工作中，我偏好有一致流程與明確檢查標準。"},{"question_id":"Q073","text":"進行較長的任務時，我希望別人不只在最後看結果，也能在過程中對我的進展給出具體回應。"},{"question_id":"Q074","text":"一天中如果能在幾個短週期任務間快速推進，我通常會覺得節奏合適。"},{"question_id":"Q075","text":"在工作選擇中，我會把工時是否可預測、能否保留生活安排，視為和工作內容同樣需要考慮的條件。"},{"question_id":"Q076","text":"當一個結果可能同時受到多個環節影響時，我會想先整理各環節之間的關係，再判斷從哪裡處理。"},{"question_id":"Q077","text":"比較幾個方案時，如果能把差異轉成數量、比例或明確指標，我通常更容易做判斷。"},{"question_id":"Q078","text":"現有做法都能使用、但各有明顯限制時，我通常會想重新組合或發展另一種做法。"},{"question_id":"Q079","text":"資訊零散又複雜時，我常會用自己的話重新整理成一段說明，幫助自己掌握重點。"},{"question_id":"Q080","text":"只要整體方向正確，成果中的小差異通常不值得我再花時間逐一確認。"},{"question_id":"Q081","text":"如果一個問題值得深入，我可以連續花很長一段時間追下去，而不需要頻繁換成其他事情。"},{"question_id":"Q082","text":"要理解一個新的流程、工具或系統時，我通常希望親自操作一次，而不只閱讀說明。"},{"question_id":"Q083","text":"共同任務中有人卡住時，只要沒有直接影響我的部分，我通常不會特別去了解他遇到的困難。"},{"question_id":"Q084","text":"團隊面臨取捨時，比起等到每個人都完全同意，我更願意在資訊足夠後做出可執行的決定並承擔結果。"},{"question_id":"Q085","text":"當我的進度會影響別人的下一步時，我會主動對齊時間、需求與交接方式，而不是只完成自己的部分。"},{"question_id":"Q086","text":"有多種方法都能達成目標時，我通常希望先有人指定做法，照著執行會比自己決定更自在。"},{"question_id":"Q087","text":"只要失敗的代價可承受，我願意測試結果較不確定、但可能帶來更好成果的方案。"},{"question_id":"Q088","text":"比起長期維持熟悉而固定的內容，我更容易在工作內容定期出現新變化時保持投入。"},{"question_id":"Q089","text":"遇到一個自己不熟悉、但可能改善成果的新概念或工具時，我通常願意花時間把它弄懂。"},{"question_id":"Q090","text":"同時有多項任務、期限又不同時，比起直接從眼前最急的事情開始，我更傾向先排出整體順序與時間節點。"},{"question_id":"Q091","text":"進行到一半突然增加新的限制時，我通常能保留原本目標，同時快速調整達成目標的路徑。"},{"question_id":"Q092","text":"完成一件原本很容易的事情，通常不如攻下一個有難度、需要突破的目標讓我有滿足感。"},{"question_id":"Q093","text":"如果一個解釋聽起來合理，即使目前缺少可驗證的資料或紀錄，我通常也願意直接採用。"},{"question_id":"Q094","text":"如果長期做出的成果很少被看見或得到具體回應，即使事情本身能完成，我的投入感也容易下降。"},{"question_id":"Q095","text":"一個流程已經穩定可用後，我仍會留意其中的等待、重工或多餘步驟，看是否值得再改善。"},{"question_id":"Q096","text":"與其持續更換不同領域，我更希望在少數主題上累積到能理解細節與來龍去脈的程度。"}];
+const SCALE={min:1,max:5,labels:{"1":"非常不同意","2":"不同意","3":"普通／不確定","4":"同意","5":"非常同意"}};
+const VERSION="2.1.0", MAPPING_VERSION="career_question_mapping_v2.1.0", STORAGE_KEY="career-fit-test::2.1.0";
+const PER_PAGE=7, TOTAL_PAGES=Math.ceil(QUESTIONS.length/PER_PAGE);
+let memoryStore=null, storageAvailable=true, completedAt=null;
 
-  <script>
-    const dimensions = [
-      {
-        id: "life_outlook", name: "人生觀", questions: [
-          "人生的意義主要應由每個人自己定義，而不是由傳統或社會替我決定。",
-          "即使沒有明確的外在成就，只要活得符合自己的信念，也可以算是成功的人生。",
-          "人在做重大選擇時，長期意義通常比眼前便利更重要。",
-          "我相信人生中的挫折通常值得被轉化成學習或重新選擇的契機。",
-          "當個人理想與社會期待衝突時，我傾向優先忠於自己真正重視的方向。"
-        ]
-      },
-      {
-        id: "money", name: "金錢觀", questions: [
-          "金錢對我而言，最重要的功能是提供安全感與選擇權。",
-          "即使收入增加，我仍認為維持適度儲蓄比提升消費水準更重要。",
-          "只要負擔得起，我願意花較多錢換取時間、便利或品質。",
-          "對親近的人談清楚借錢、分攤與還款方式，是維持關係的必要做法。",
-          "我可以接受為了更高的長期報酬承擔一定程度的財務波動與不確定性。"
-        ]
-      },
-      {
-        id: "morality", name: "道德與是非觀", questions: [
-          "即使不會被發現，我也認為不應為了方便而違反自己認定的重要原則。",
-          "判斷一件事是否正當時，我會同時考慮規則、動機與造成的後果。",
-          "在某些極端情況下，說謊可能比完全誠實更符合道德。",
-          "當多數人的做法與我的道德判斷衝突時，我願意維持自己的立場。",
-          "一個人犯錯後是否願意承擔責任與補救，會影響我對他的道德評價。"
-        ]
-      },
-      {
-        id: "society_fairness", name: "社會與公平觀", questions: [
-          "社會制度應盡量讓不同起點的人都擁有合理的發展機會。",
-          "公平不一定代表每個人得到完全一樣的資源或結果。",
-          "當制度性的不利長期存在時，社會可以採取額外措施來縮小差距。",
-          "享有較多資源與權力的人，應承擔較高程度的公共責任。",
-          "我能接受某些公共政策犧牲部分個人便利，以換取更大的社會整體利益。"
-        ]
-      },
-      {
-        id: "family", name: "家庭觀", questions: [
-          "成年後，即使與家人感情親近，也應保有獨立決定人生方向的權利。",
-          "家庭成員在彼此有需要時，通常應比一般人承擔更多互助責任。",
-          "維持家庭關係不代表必須接受長期傷害自己的相處方式。",
-          "重要的家庭決定應盡量透過溝通，而不是單純服從年長者或傳統角色。",
-          "我重視固定投入時間經營家人關係，即使生活忙碌也一樣。"
-        ]
-      },
-      {
-        id: "friendship", name: "友情與人際觀", questions: [
-          "真正的朋友不需要頻繁聯絡，但在重要時刻應彼此可靠。",
-          "當朋友的選擇明顯傷害他人時，我會傾向坦白表達不同意，而不是只支持他。",
-          "人際關係中，互惠與界線比單方面犧牲更健康。",
-          "我願意主動維持與重要朋友的關係，而不是完全依賴自然發展。",
-          "若一段友誼長期消耗多於支持，我可以接受逐漸拉開距離。"
-        ]
-      },
-      {
-        id: "career", name: "工作與事業觀", questions: [
-          "選擇工作時，成長空間與意義感對我不亞於薪資。",
-          "我願意為了重要的職涯目標，在一段時間內承受較高壓力或較少休閒。",
-          "工作不應成為衡量一個人全部價值的主要標準。",
-          "如果一份工作長期違背我的核心價值，即使待遇不錯，我也會考慮離開。",
-          "我重視專業自主與能決定工作方式的空間。"
-        ]
-      },
-      {
-        id: "lifestyle", name: "生活方式與享樂觀", questions: [
-          "我認為生活品質不只是效率，也包括休息、興趣與享受當下。",
-          "比起擁有更多物品，我更重視有品質的體驗與回憶。",
-          "我喜歡為生活保留一定的隨性，不希望每件事都安排得非常精確。",
-          "即使生活忙碌，我也認為固定照顧睡眠、飲食與身體狀態很重要。",
-          "適度享樂本身有價值，不必每件事都具有生產力或明確成果。"
-        ]
-      },
-      {
-        id: "freedom_boundaries", name: "自由與個人界線", questions: [
-          "只要沒有傷害他人，成年人應有很大的空間選擇自己的生活方式。",
-          "即使關係很親近，我仍需要保留部分個人時間、隱私與獨處空間。",
-          "我認為『關心』不應成為查看他人私人物品、帳號或訊息的理由。",
-          "當別人的期待讓我感到勉強時，我有責任清楚表達界線。",
-          "尊重一個人的拒絕，通常比說服他改變決定更重要。"
-        ]
-      },
-      {
-        id: "conflict", name: "情緒與衝突處理", questions: [
-          "發生衝突時，我傾向先弄清楚彼此真正的需求，而不是急著分出誰輸誰贏。",
-          "情緒強烈時，先暫停對話、等冷靜後再談，通常比立刻解決更好。",
-          "即使我覺得自己有道理，也應避免羞辱、威脅或故意刺激情緒。",
-          "我希望重要衝突最後能形成較具體的共識或下一步，而不只是把情緒說完。",
-          "我可以接受在衝突中承認自己部分有錯，而不把它視為失去立場。"
-        ]
-      },
-      {
-        id: "learning_growth", name: "學習與成長觀", questions: [
-          "我願意主動接觸與自己原本立場不同的觀點。",
-          "當新證據足夠有力時，改變原本看法是一種成熟，而不是搖擺不定。",
-          "我重視持續學習，即使學習內容不一定立刻帶來實際利益。",
-          "做錯事後，比起證明自己其實沒錯，我更重視找出下次怎麼做得更好。",
-          "我相信多數能力都能透過長期練習與回饋逐步提升。"
-        ]
-      },
-      {
-        id: "tech_environment", name: "科技與環境觀", questions: [
-          "只要能明顯提升生活或工作品質，我通常願意嘗試新的科技工具。",
-          "科技便利不應凌駕於隱私、安全與人的自主權。",
-          "個人即使力量有限，也應為減少資源浪費與環境負擔做出合理改變。",
-          "企業與政府在科技發展造成重大社會風險時，應承擔主動管理責任。",
-          "面對環境問題，我可以接受部分成本上升或便利性下降，以換取更長期的永續。"
-        ]
-      },
-      {
-        id: "risk_safety", name: "風險與安全觀", questions: [
-          "面對重大決定時，我偏好先蒐集足夠資訊，再採取行動。",
-          "即使有失敗可能，只要潛在收穫值得，我願意嘗試風險可控的新選擇。",
-          "穩定與可預測性對我的生活滿意度非常重要。",
-          "重要計畫最好預留備案，而不是只依賴最理想的情況發生。",
-          "當風險涉及他人的安全或重大利益時，我會採取比只影響自己更保守的標準。"
-        ]
-      },
-      {
-        id: "love_intimacy", name: "愛情與親密關係觀", questions: [
-          "親密關係中，坦誠溝通需求與不滿，比期待對方自己猜到更重要。",
-          "穩定的親密關係仍應允許雙方保有獨立的興趣、朋友與成長空間。",
-          "我重視透過具體行動持續經營親密感，而不只依賴感覺自然存在。",
-          "重大承諾應建立在價值觀、生活安排與責任分工都充分討論的基礎上。",
-          "安全感不應以限制對方正常社交、自由或隱私為主要代價。"
-        ]
-      },
-      {
-        id: "life_happiness", name: "生命與幸福觀", questions: [
-          "幸福對我而言，更接近長期的充實與安定，而不只是頻繁的快樂情緒。",
-          "我認為有意義的人際連結，是人生幸福的重要來源之一。",
-          "即使外在條件不完美，我仍重視培養感恩、好奇與享受日常的能力。",
-          "對我而言，擁有可自主安排的時間，是幸福的重要部分。",
-          "如果人生有限，我希望把更多時間投入真正重要的人與事，而不是只追求社會認可。"
-        ]
-      }
-    ];
-
-    const totalQuestions = dimensions.reduce((sum, d) => sum + d.questions.length, 0);
-    if (totalQuestions !== 75) throw new Error(`題數錯誤：${totalQuestions}`);
-
-    const root = document.getElementById('questionsRoot');
-    const progressText = document.getElementById('progressText');
-    const progressFill = document.getElementById('progressFill');
-    const statusEl = document.getElementById('status');
-    const nameInput = document.getElementById('respondentName');
-
-    // 75 題已直接寫入 HTML，避免手機預覽環境無法執行動態產生題目的 JavaScript。
-
-
-    function getAnsweredCount() {
-      let count = 0;
-      for (let i = 1; i <= totalQuestions; i++) {
-        const qid = `q${String(i).padStart(2, '0')}`;
-        if (document.querySelector(`input[name="${qid}"]:checked`)) count++;
-      }
-      return count;
+function localISO(date=new Date()){
+  const pad=n=>String(n).padStart(2,'0');
+  const off=-date.getTimezoneOffset(), sign=off>=0?'+':'-', ah=Math.floor(Math.abs(off)/60), am=Math.abs(off)%60;
+  return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}${sign}${pad(ah)}:${pad(am)}`;
+}
+function defaultState(){return {questionnaire_version:VERSION,name:'',answers:{},currentPage:0,startedAt:null};}
+let state=defaultState();
+function safeLoad(){
+  try{const raw=localStorage.getItem(STORAGE_KEY); if(raw){const x=JSON.parse(raw); if(x.questionnaire_version===VERSION) state=Object.assign(defaultState(),x);}}
+  catch(e){storageAvailable=false; if(memoryStore) state=memoryStore;}
+}
+function safeSave(){
+  memoryStore=JSON.parse(JSON.stringify(state));
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+  catch(e){storageAvailable=false; document.getElementById('storageNote').classList.remove('hidden');}
+}
+function safeClear(){try{localStorage.removeItem(STORAGE_KEY);}catch(e){storageAvailable=false;} memoryStore=null;}
+function answeredCount(){return Object.keys(state.answers).filter(k=>Number.isInteger(state.answers[k])&&state.answers[k]>=1&&state.answers[k]<=5).length;}
+function setScreen(name){for(const id of ['startScreen','quizScreen','finishScreen'])document.getElementById(id).classList.add('hidden');document.getElementById(name).classList.remove('hidden');}
+function updateProgress(){const n=answeredCount();document.getElementById('progressText').textContent=`已完成 ${n} / ${QUESTIONS.length}`;document.getElementById('progressBar').style.width=`${n/QUESTIONS.length*100}%`;document.getElementById('pageText').textContent=`第 ${state.currentPage+1} / ${TOTAL_PAGES} 頁`;}
+function renderPage(markMissing=false){
+  state.currentPage=Math.max(0,Math.min(TOTAL_PAGES-1,state.currentPage)); safeSave();
+  const start=state.currentPage*PER_PAGE, pageQs=QUESTIONS.slice(start,start+PER_PAGE), box=document.getElementById('questions'); box.innerHTML='';
+  pageQs.forEach(q=>{
+    const fs=document.createElement('fieldset'); fs.className='q'+(markMissing&&!state.answers[q.question_id]?' missing':'');
+    const lg=document.createElement('legend'); lg.innerHTML=`<span class="qid">${q.question_id}</span>${escapeHtml(q.text)}`; fs.appendChild(lg);
+    const row=document.createElement('div'); row.className='likert';
+    for(let score=1;score<=5;score++){
+      const wrap=document.createElement('div'); wrap.className='choice'; const id=`${q.question_id}_${score}`;
+      const inp=document.createElement('input'); inp.type='radio'; inp.name=q.question_id; inp.id=id; inp.value=String(score); inp.checked=state.answers[q.question_id]===score;
+      inp.addEventListener('change',()=>{state.answers[q.question_id]=score;safeSave();updateProgress();fs.classList.remove('missing');document.getElementById('quizNotice').classList.add('hidden');});
+      const lab=document.createElement('label');lab.htmlFor=id;lab.textContent=String(score);lab.title=SCALE.labels[String(score)];wrap.append(inp,lab);row.appendChild(wrap);
     }
+    fs.appendChild(row);box.appendChild(fs);
+  });
+  document.getElementById('prevBtn').disabled=state.currentPage===0;
+  document.getElementById('nextBtn').textContent=state.currentPage===TOTAL_PAGES-1?'完成測驗':'下一頁';
+  updateProgress();window.scrollTo({top:0,behavior:'smooth'});
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function startQuiz(){
+  const name=document.getElementById('nameInput').value.trim(); if(!name){document.getElementById('nameError').classList.remove('hidden');return;}
+  document.getElementById('nameError').classList.add('hidden'); state.name=name; if(!state.startedAt)state.startedAt=localISO(); safeSave(); setScreen('quizScreen'); renderPage(false);
+}
+function finishQuiz(){
+  const missing=QUESTIONS.filter(q=>!Number.isInteger(state.answers[q.question_id]));
+  if(missing.length){const first=QUESTIONS.findIndex(q=>q.question_id===missing[0].question_id);state.currentPage=Math.floor(first/PER_PAGE);safeSave();const n=document.getElementById('quizNotice');n.textContent=`還有 ${missing.length} 題尚未完成。`;n.classList.remove('hidden');renderPage(true);return;}
+  completedAt=localISO(); setScreen('finishScreen'); window.scrollTo({top:0,behavior:'smooth'});
+}
+function responseObject(){
+  if(!completedAt)completedAt=localISO();
+  return {schema_version:'career-response-1.0',questionnaire_id:'career-fit-test',questionnaire_version:VERSION,question_mapping_version:MAPPING_VERSION,language:'zh-TW',respondent:{name:state.name},started_at:state.startedAt,completed_at:completedAt,scale:SCALE,answers:QUESTIONS.map(q=>({question_id:q.question_id,question_text:q.text,score:state.answers[q.question_id]}))};
+}
+function safeFilePart(s){
+  let x=String(s).normalize('NFKC');
+  // Replace characters that are unsafe in common file systems without embedding control bytes in this HTML source.
+  x=x.replace(/[<>:"\/\\|?*]/g,'_');
+  x=Array.from(x).map(ch=>ch.charCodeAt(0)<32?'_':ch).join('');
+  x=x.replace(/[. ]+$/g,'').trim();
+  return (x||'respondent').slice(0,60);
+}
+function stamp(){const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;}
+function downloadJSON(){
+  const data=responseObject(), blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}), url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url;a.download=`career_test_${safeFilePart(state.name)}_${stamp()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function resetAll(){if(!confirm('確定要清除目前作答並重新開始嗎？'))return;safeClear();state=defaultState();completedAt=null;document.getElementById('nameInput').value='';document.getElementById('quizNotice').classList.add('hidden');setScreen('startScreen');window.scrollTo({top:0,behavior:'smooth'});}
 
-    function updateProgress() {
-      const count = getAnsweredCount();
-      const pct = Math.round((count / totalQuestions) * 100);
-      progressText.textContent = `已完成 ${count} / ${totalQuestions}（${pct}%）`;
-      progressFill.style.width = `${pct}%`;
-    }
+document.getElementById('startBtn').addEventListener('click',startQuiz);
+document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+document.getElementById('prevBtn').addEventListener('click',()=>{if(state.currentPage>0){state.currentPage--;renderPage(false);}});
+document.getElementById('nextBtn').addEventListener('click',()=>{if(state.currentPage<TOTAL_PAGES-1){state.currentPage++;renderPage(false);}else finishQuiz();});
+document.getElementById('downloadBtn').addEventListener('click',downloadJSON);
+document.getElementById('resetBtn').addEventListener('click',resetAll);
 
-    root.addEventListener('change', (event) => {
-      if (event.target.matches('input[type="radio"]')) {
-        const block = event.target.closest('.question');
-        block?.classList.remove('invalid');
-        updateProgress();
-        statusEl.textContent = '';
-        statusEl.className = 'status';
-      }
-    });
-
-    function collectAnswers() {
-      const answers = [];
-      let index = 0;
-      dimensions.forEach((dimension, di) => {
-        dimension.questions.forEach((question, qi) => {
-          index++;
-          const qid = `q${String(index).padStart(2, '0')}`;
-          const selected = document.querySelector(`input[name="${qid}"]:checked`);
-          answers.push({
-            question_id: qid,
-            question_number: index,
-            dimension_id: dimension.id,
-            dimension_number: di + 1,
-            dimension_name: dimension.name,
-            question_number_within_dimension: qi + 1,
-            question,
-            answer: selected ? Number(selected.value) : null
-          });
-        });
-      });
-      return answers;
-    }
-
-    function safeFilename(text) {
-      return (text || 'respondent')
-        .trim()
-        .replace(/[\\/:*?"<>|]+/g, '_')
-        .replace(/\s+/g, '_')
-        .slice(0, 50) || 'respondent';
-    }
-
-    function localTimestamp() {
-      const d = new Date();
-      const pad = n => String(n).padStart(2, '0');
-      return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
-    }
-
-    let latestJsonText = '';
-    let latestJsonFilename = '';
-
-    function buildPayload() {
-      const name = nameInput.value.trim();
-      const answers = collectAnswers();
-      return { name, answers, missing: answers.filter(a => a.answer === null) };
-    }
-
-    function makePayload(name, answers) {
-      return {
-        schema: "two_person_values_test_v1",
-        test_title: "雙人全方位價值觀測驗",
-        version: "1.3-ios-fixed",
-        respondent_name: name,
-        completed_at: new Date().toISOString(),
-        scale: {
-          min: 1, max: 5,
-          labels: {"1":"非常不同意","2":"不同意","3":"中立／看情況","4":"同意","5":"非常同意"}
-        },
-        similarity_method: {
-          per_question: "100% - (absolute answer difference × 25%)",
-          dimension: "mean of 5 question similarities",
-          overall: "mean of all 75 question similarities",
-          disclaimer: "百分比僅代表這份自訂測驗的回答接近程度，不代表科學驗證的感情契合度，也不能用來預測關係成敗。"
-        },
-        dimensions: dimensions.map((d, idx) => ({dimension_number: idx+1, dimension_id:d.id, dimension_name:d.name})),
-        answers
-      };
-    }
-
-    function tryDownload(jsonText, filename) {
-      try {
-        const blob = new Blob([jsonText], { type: 'application/json;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 1500);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-
-    async function shareJson() {
-      if (!latestJsonText) return;
-      try {
-        const file = new File([latestJsonText], latestJsonFilename, { type: 'application/json' });
-        if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
-          await navigator.share({ files: [file], title: '雙人全方位價值觀測驗答案' });
-          statusEl.textContent = '已開啟分享選單，可選「儲存到檔案」或其他 App。';
-          statusEl.className = 'status ok';
-          return;
-        }
-      } catch (e) {
-        if (e && e.name === 'AbortError') return;
-      }
-      tryDownload(latestJsonText, latestJsonFilename);
-      statusEl.textContent = '目前瀏覽器不支援檔案分享，已再次嘗試下載；若仍沒有反應，請使用「複製 JSON」。';
-      statusEl.className = 'status error';
-    }
-
-    async function copyJson() {
-      if (!latestJsonText) return;
-      const out = document.getElementById('jsonOutput');
-      try {
-        await navigator.clipboard.writeText(latestJsonText);
-        statusEl.textContent = 'JSON 已複製到剪貼簿。你可以直接貼回 ChatGPT，或貼到文字檔保存。';
-        statusEl.className = 'status ok';
-      } catch (e) {
-        out.focus(); out.select(); out.setSelectionRange(0, out.value.length);
-        const ok = document.execCommand && document.execCommand('copy');
-        statusEl.textContent = ok ? 'JSON 已複製到剪貼簿。' : '無法自動複製，已幫你選取 JSON；請長按後選「拷貝」。';
-        statusEl.className = ok ? 'status ok' : 'status error';
-      }
-    }
-
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-      document.querySelectorAll('.question.invalid').forEach(el => el.classList.remove('invalid'));
-      const {name, answers, missing} = buildPayload();
-
-      if (!name) {
-        statusEl.textContent = '請先輸入填寫者名稱。';
-        statusEl.className = 'status error';
-        nameInput.focus();
-        return;
-      }
-      if (missing.length > 0) {
-        missing.forEach(a => document.getElementById(`block-${a.question_id}`)?.classList.add('invalid'));
-        statusEl.textContent = `尚有 ${missing.length} 題未作答，已標示第一個缺漏位置。`;
-        statusEl.className = 'status error';
-        document.getElementById(`block-${missing[0].question_id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-
-      const payload = makePayload(name, answers);
-      latestJsonText = JSON.stringify(payload, null, 2);
-      latestJsonFilename = `價值觀測驗_${safeFilename(name)}_${localTimestamp()}.json`;
-      document.getElementById('jsonOutput').value = latestJsonText;
-      document.getElementById('exportPanel').classList.add('show');
-      tryDownload(latestJsonText, latestJsonFilename);
-      statusEl.textContent = 'JSON 已產生。若手機沒有自動下載，請使用下方「分享／儲存 JSON」或「複製 JSON」。';
-      statusEl.className = 'status ok';
-      document.getElementById('exportPanel').scrollIntoView({ behavior:'smooth', block:'center' });
-    });
-
-    document.getElementById('shareBtn').addEventListener('click', shareJson);
-    document.getElementById('copyBtn').addEventListener('click', copyJson);
-    document.getElementById('retryDownloadBtn').addEventListener('click', () => {
-      if (latestJsonText) tryDownload(latestJsonText, latestJsonFilename);
-    });
-
-    document.getElementById('clearBtn').addEventListener('click', () => {
-      const hasAnswers = getAnsweredCount() > 0 || nameInput.value.trim();
-      if (!hasAnswers || window.confirm('確定要清除姓名與全部答案嗎？此動作無法復原。')) {
-        document.getElementById('quizForm').reset();
-        document.querySelectorAll('.question.invalid').forEach(el => el.classList.remove('invalid'));
-        statusEl.textContent = '';
-        statusEl.className = 'status';
-        latestJsonText = ''; latestJsonFilename = '';
-        document.getElementById('exportPanel').classList.remove('show');
-        document.getElementById('jsonOutput').value = '';
-        updateProgress();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-
-    updateProgress();
-  </script>
-</body>
-</html>
+safeLoad();
+document.getElementById('nameInput').value=state.name||'';
+if(!storageAvailable)document.getElementById('storageNote').classList.remove('hidden');
+if(state.name && state.startedAt)document.getElementById('startBtn').textContent=answeredCount()>0?'繼續上次作答':'開始測驗';
+</script>
+</body></html>
